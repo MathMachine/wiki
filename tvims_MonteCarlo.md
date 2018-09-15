@@ -40,12 +40,12 @@ $$
 # Оценка числа pi
 # N -- количество точек
 function ret = pi_est(N)
-s = 0;
-for i = 1 : N
-p = 2 * rand(1, 2) - 1;
-s += p(1) ^ 2 + p(2) ^ 2 < 1;
-endfor
-ret = 4 * s / N;
+  s = 0;
+  for i = 1 : N
+    p = 2 * rand(1, 2) - 1;
+    s += p(1) ^ 2 + p(2) ^ 2 < 1;
+  endfor
+  ret = 4 * s / N;
 endfunction
 ```
 
@@ -66,15 +66,15 @@ more off
 Nval = 1000 : 1000 : 25000;
 M = 5;
 for i = 1 : length(Nval)
-N = Nval(i)
-rms = 0;
-for k = 1 : M
-est = pi_est(N);
-rms += (est - pi) ^ 2;
-px(i, k) = N;
-py(i, k) = est;
-endfor
-rms_vec(i) = sqrt(rms / M);
+  N = Nval(i)
+  rms = 0;
+  for k = 1 : M
+    est = pi_est(N);
+    rms += (est - pi) ^ 2;
+    px(i, k) = N;
+    py(i, k) = est;
+  endfor
+  rms_vec(i) = sqrt(rms / M);
 endfor
 
 figure
@@ -127,12 +127,12 @@ $$
 ```matlab
 # Вычисление интеграла от f на (a, b) при помощи выборки длины N
 function ret = calc_integral(f, a, b, N)
-s = 0;
-for i = 1 : N
-x = a + rand * (b - a);
-s += f(x);
-endfor
-ret = (b - a) / N * s;
+  s = 0;
+  for i = 1 : N
+    x = a + rand * (b - a);
+    s += f(x);
+  endfor
+  ret = (b - a) / N * s;
 endfunction
 ```
 
@@ -185,27 +185,27 @@ $$
 ```matlab
 # Датчик случайной величины с распределением Лапласа
 function ret = gen_laplace()
-y = rand;
-ret = laplace_inv(y);
+  y = rand;
+  ret = laplace_inv(y);
 endfunction
 
 # Датчик случайной величины с нормальным распределением
 function ret = gen_normal()
-y = rand;
-ret = norminv(y);
+  y = rand;
+  ret = norminv(y);
 endfunction
 
 N = 25000;
 sample_laplace = sample_normal = zeros(1, N);
 
 for i = 1 : N
-sample_laplace(i) = gen_laplace();
+  sample_laplace(i) = gen_laplace();
 endfor
 figure
 hist(sample_laplace, 40);
 
 for i = 1 : N
-sample_normal(i) = gen_normal();
+  sample_normal(i) = gen_normal();
 endfor
 figure
 hist(sample_normal, 40);

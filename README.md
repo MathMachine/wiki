@@ -14,3 +14,5 @@ Wiki-конспекты и [форум](https://groups.google.com/forum/#!forum/
 - [Уравнения математической физики](mathphys.md)
 - [Функциональный анализ](funcan.md)
 - [Численные методы](numer.md)
+- [Методы оптимизации](optimization.md)
+- [Оптимальное управление](optcontrol.md)
