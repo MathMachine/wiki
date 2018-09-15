@@ -54,7 +54,7 @@ endfunction
 ![Оценка числа пи](/images/tvims/MonteCarlo/pi_est1.png)
 
 Также для каждого $$N$$ посчитаем по 5 оценкам среднеквадратичное отклонение от числа $$\pi$$.
-![](/images/tvims/MonteCarlo/pi_est2.png)
+![СКО оценки числа пи](/images/tvims/MonteCarlo/pi_est2.png)
 
 Отметим, что при каждом запуске программы будут получаться разные графики ввиду случайности.
 
@@ -142,11 +142,11 @@ endfunction
 
 Значения интеграла в зависимости от $$N$$:
 
-![](/images/tvims/MonteCarlo/int_est1.png)
+![Оценка интеграла](/images/tvims/MonteCarlo/int_est1.png)
 
 Среднеквадратичное отклонение от точного значения интеграла:
 
-![](/images/tvims/MonteCarlo/int_est2.png)
+![СКО оценки интеграла](/images/tvims/MonteCarlo/int_est2.png)
 
 
 В [2] приводится формула с весом:
@@ -213,8 +213,8 @@ hist(sample_normal, 40);
 
 Гистограмма, построенная по датчику случайной величины с распределением Лапласа:
 
-![](/images/tvims/MonteCarlo/laplace.png)
+![Гистограмма распределения Лапласа](/images/tvims/MonteCarlo/laplace.png)
 
 Гистограмма, построенная по датчику случайной величины с нормальным распределением:
 
-![](/images/tvims/MonteCarlo/normal.png)
+![Гистограмма нормального распределения](/images/tvims/MonteCarlo/normal.png)
