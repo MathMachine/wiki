@@ -16,3 +16,5 @@ Wiki-конспекты и [форум](https://groups.google.com/forum/#!forum/
 - [Численные методы](numer.md)
 - [Методы оптимизации](optimization.md)
 - [Оптимальное управление](optcontrol.md)
+- [Программирование](programming.md)
+- [Философия](http://ph-dvfu.github.io)
