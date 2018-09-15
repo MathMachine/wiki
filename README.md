@@ -18,3 +18,4 @@ Wiki-конспекты и [форум](https://groups.google.com/forum/#!forum/
 - [Оптимальное управление](optcontrol.md)
 - [Программирование](programming.md)
 - [Философия](http://ph-dvfu.github.io)
+- [Ссылки](links.md)
