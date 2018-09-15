@@ -26,20 +26,20 @@ $d(v)$, $v \in V$ -- текущая длина пути
 
 $F \leftarrow \varnothing$; $d(v) \leftarrow \infty \, \forall v \in V$; $d(s) \leftarrow 0$;
 
-for $$i \leftarrow 1$$ to
+**for** $$i \leftarrow 1$$ to
 $$|V|$$
 
-&nbsp;&nbsp;&nbsp; $$u \leftarrow \mathop{\mathrm{arg\,min}}\limits_{v \in V \setminus F} d(v)$$
+&nbsp;&nbsp;&nbsp; $$u \leftarrow \mathop{\mathrm{arg\,min}}\limits_{v \in V \setminus F} d(v)$$;
 
 &nbsp;&nbsp;&nbsp; $F \leftarrow F \cup \{u\}$;
 
-&nbsp;&nbsp;&nbsp; for $\{v \colon (u, v) \in E\}$
+&nbsp;&nbsp;&nbsp; **for** $\{v \colon (u, v) \in E\}$
 
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; $d(v) \leftarrow \min \{d(v), d(u) + \rho(u, v)\}$;
 
-&nbsp;&nbsp;&nbsp; endfor
+&nbsp;&nbsp;&nbsp; **endfor**
 
-endfor
+**endfor**
 
 
 #### Обоснование алгоритма
