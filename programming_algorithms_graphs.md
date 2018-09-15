@@ -12,7 +12,7 @@ $\rho \geq 0$, $s \in V$ -- заданная вершина графа.
 
 Обозначим через $$d_*(u)$$ длину кратчайшего пути из $s$ в $u$:
 $$
-d_*(u) = \min_{\{v_i\}} \sum_{i=0}^{K-1} \rho(v_i, v_{i+1}).
+d_*(u) = \min\limits_{\{v_i\}} \sum_{i=0}^{K-1} \rho(v_i, v_{i+1}).
 $$
 
 Требуется найти $$d_*(u)$$ для всех $u \in V$, а также сами кратчайшие пути из $s$
@@ -29,7 +29,7 @@ $F \leftarrow \varnothing$; $d(v) \leftarrow \infty \, \forall v \in V$; $d(s) \
 for $$i \leftarrow 1$$ to
 $$|V|$$
 
-&nbsp;&nbsp;&nbsp; $$u \leftarrow \argmin\limits_{v \in V \setminus F} d(v)$$;
+&nbsp;&nbsp;&nbsp; <div markdown="0">$$u \leftarrow \argmin\limits_{v \in V \setminus F} d(v)$$;</div>
 
 &nbsp;&nbsp;&nbsp; $F \leftarrow F \cup \{u\}$;
 
