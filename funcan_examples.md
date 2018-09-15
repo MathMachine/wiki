@@ -166,7 +166,9 @@ $$
 f \in H^1_0(0,\pi) \Leftrightarrow \|f\|_{H^1_0}^2 < \infty \Leftrightarrow \sum_{j=1}^\infty j^2 f_j^2 < \infty.
 $$
 
-$H^1_0(0,\pi)$ плотно в $L^2(0,\pi) \Rightarrow u_j$ - базис в $L^2(0,\pi) \Rightarrow f = \sum_{j=1}^\infty (f,u_j)u_j$, $$\|f\|^2_{L^2} = \sum_{j=1}^\infty|(f,u_j)|^2$$.
+$H^1_0(0,\pi)$ плотно в $L^2(0,\pi) \Rightarrow u_j$ - базис в $L^2(0,\pi) \Rightarrow f = \sum_{j=1}^\infty (f,u_j)u_j$,
+$$\|f\|^2_{L^2} =
+\sum_{j=1}^\infty|(f,u_j)|^2$$.
 
 $$
 (f,u_j) = \sqrt{\frac{2}{\pi}}\int_0^\pi f(x)\sin(jx)\,dx = \sqrt{\frac{\pi}{2}}f_j
