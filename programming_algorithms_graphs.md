@@ -29,7 +29,7 @@ $F \leftarrow \varnothing$; $d(v) \leftarrow \infty \, \forall v \in V$; $d(s) \
 for $$i \leftarrow 1$$ to
 $$|V|$$
 
-&nbsp;&nbsp;&nbsp; <div markdown="0">$$u \leftarrow \argmin\limits_{v \in V \setminus F} d(v)$$;</div>
+&nbsp;&nbsp;&nbsp; $$u \leftarrow \mathop{\mathrm{arg\,min}}\limits_{v \in V \setminus F} d(v)$$
 
 &nbsp;&nbsp;&nbsp; $F \leftarrow F \cup \{u\}$;
 
