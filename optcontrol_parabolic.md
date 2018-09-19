@@ -104,12 +104,15 @@ $$
 $$
 0 = \int_0^T \int_0^l (u_t - a^2u_{xx} - f)\psi\,dxdt =
 $$
+
 $$
 =\int_0^T \int_0^l (-u\psi_t + a^2 u_x\psi_x - f\psi)dxdt +
 $$
+
 $$
 + \int_0^l u(x,T)\psi(x,T)\,dx - \int_0^l \phi(x)\psi(x,0)\,dx -
 $$
+
 $$
 \tag{5}
 - a^2\nu \int_0^T [p(t) - u(l,t)]\psi(l,t)\,dt\quad \forall \psi \in W^{1,1}_2(Q).
