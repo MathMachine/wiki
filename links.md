@@ -41,6 +41,8 @@ http://stu.scask.ru
 
 [Хекслет](https://ru.hexlet.io)
 
+[Лекториум](https://www.lektorium.tv)
+
 
 ### Развлечения
 

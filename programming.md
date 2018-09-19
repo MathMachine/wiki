@@ -2,6 +2,7 @@
 
 ## Алгоритмы и структуры данных
 
+- [Алгоритмы сортировки](programming_algorithms_sorting.md)
 - [Алгоритмы на графах](programming_algorithms_graphs.md)
 
 ### Источники
@@ -24,4 +25,5 @@
 
 ## Прочее
 
-[Игры, которые учат программированию](https://habr.com/post/273003/)
+- [Игры, которые учат программированию](https://habr.com/post/273003/)
+- [Онлайн-курсы от Computer Science Center](https://www.lektorium.tv/university/2932)
