@@ -2,6 +2,7 @@
 
 - [Метод градиентного спуска](optcontrol_gradient_method.md)
 - [Сходимость метода градиентного спуска](optcontrol_gradient_method_convergence.md)
+- [Оптимальное управление параболическими уравнениями](optcontrol_parabolic.md)
 
 ### Источники
 
