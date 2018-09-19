@@ -186,9 +186,11 @@ $$
 $$
 
 Запишем интегральное тождество для этой задачи. Здесь $$u \in V_2^{1,0}(Q)$$.
+
 $$
 \int_0^T \int_0^l (-\Delta u\psi_t + a^2\Delta u_x\psi_x - \Delta f \psi)\,dxdt +
 $$
+
 $$
 \tag{7}
 + \int_0^l \psi(x,T)\Delta u(x,T)\,dx - a^2\nu\int_0^T [\Delta p(t) - \Delta u(l,t)]\psi(l,t)\,dt = 0 \;\; \forall \psi \in W_2^{1,1}(Q).
@@ -205,14 +207,17 @@ $$
 Это слагаемое нужно представить в виде скалярного произведения некоторого элемента пространства $$H$$ на $$\Delta v = (\Delta p, \Delta f)$$.
 
 Из (7), (8) следует, что
+
 $$
 \int_0^l \psi(x,T)\Delta u(x,T)\,dx =
 $$
+
 $$
 \tag{9}
 = a^2\nu\int_0^T [\Delta p(t) - \Delta u(l,t)]\psi(l,t)\,dt
 - \int_0^T \int_0^l (-\Delta u\psi_t + a^2\Delta u_x\psi_x - \Delta f \psi)\,dxdt.
 $$
+
 В градиент $$J$$ пойдут слагаемые $$a^2\nu\int_0^T \Delta p(t)\psi(l,t)\,dt$$ и
 $$\int_0^T \int_0^l \Delta f \psi \,dxdt $$.
 Итак, мы вычисляем градиент с помощью неизвестной функции $$\psi$$.
@@ -234,6 +239,7 @@ $$
 \int_0^l \psi(x,T)\Delta u(x,T)\,dx = a^2\nu\int_0^T \psi(l,t)\Delta p(t)\,dt +
 \int_0^T\int_0^l\psi(x,t)\Delta f(x,t)\,dxdt +
 $$
+
 $$
 + \int_0^T\int_0^l(\Delta u\psi_t - a^2\Delta u_x\psi_x)\,dxdt - a^2\nu \int_0^T\Delta u(l,t)\psi(l,t)\,dt.
 $$
@@ -322,14 +328,17 @@ $$
 $$
 
 Если мы выберем в интегральном тождестве для $$\Delta u$$, $$\psi = \psi_n(x,t)$$, то мы получим
+
 $$
 \int_0^l g_n(x)\Delta u(x,t)\,dx = a^2\nu \int_0^T \psi_n(l,t)\Delta p(t)\,dt +
 \int_0^T \int_0^l \psi_n(x,t)\Delta f(x,t)\,dxdt +
 $$
+
 $$
 + \int_0^T\int_0^l(\Delta u\psi_{nt} - a^2\Delta u_x\psi_{nx})dxdt -
 a^2\nu\int_0^T \Delta u(l,t)\psi_n(l,t)\,dt.
 $$
+
 Здесь $$\psi_n$$ -- это гладкое решение этой задачи (в частности, из $$W_2^{1,1}$$).
 
 $$n\to\infty \;\Rightarrow\; \psi_n\to\psi$$ в $$V_2^{1,0}(Q)$$ $$\Rightarrow\; \psi_n(x,t) \to \psi$$ в $$L^2(Q)$$, $$\psi_n(l,t) \to \psi$$ в $$L^2(0,T)$$.
@@ -371,24 +380,30 @@ $$
 J(\alpha v + (1-\alpha)w) = \int_0^l |u(x,T;\alpha v + (1-\alpha)w) - f(x)|^2\,dx =
 \int_0^l |\alpha (u(x,T;v) - f(x)) + (1-\alpha)(u(x,T;w) - f(x))|^2\,dx =
 $$
+
 $$
 = \langle \alpha (u(x,t;v) - f(x)) + (1-\alpha)(u(x,T;w) - f(x)),
 \alpha (u(x,t;v) - f(x)) + (1-\alpha)(u(x,T;w) - f(x)) \rangle =
 $$
+
 $$
 = \alpha^2 \int_0^T |u(x,T;v) - f(x)|^2\,dx +
 (1-\alpha)^2\int_0^T |u(x,T;w) - f(x)|^2\,dx +
 $$
+
 $$
 + 2\alpha(1-\alpha)\langle u(x,T;v) - f(x), u(x,T;w) - f(x) \rangle =
 $$
+
 $$
 = \alpha J(v) + (1-\alpha)J(w) - \alpha(1-\alpha)\langle u(x,T;v)-f(x), u(x,T;v)-f(x)\rangle -
 $$
+
 $$
 - \alpha(1-\alpha)\langle u(x,T;w) - f(x), u(x,T;w) - f(x)\rangle
 + 2\alpha(1-\alpha)\langle u(x,T;v) - f(x), u(x,T;w) - f(x) \rangle =
 $$
+
 $$
 = \alpha J(v) + (1-\alpha)J(w) - \alpha(1-\alpha)\|u(x,T; v-w)\|^2_{L^2(0,l)} \leq \alpha J(v) + (1-\alpha)J(w).
 $$
@@ -423,7 +438,7 @@ $$
 $$
 При $$\alpha \to 0$$ получаем (*).
 
-Если $$u_* \in \mathrm{int}\, U$$, то $$\forall e \in B, \|e\| = 1: \exists\varepsilon_0 > 0 \colon u_* + \varepsilon e \in U \; \forall \varepsilon, |\varepsilon| \leq \varepsilon_0$$.
+Если $$u_* \in \mathrm{int}\, U$$, то $$\forall e \in B, \|e\| = 1: \exists\varepsilon_0 > 0 \colon u_* + \varepsilon e \in U \; \forall \varepsilon, \vert\varepsilon\vert \leq \varepsilon_0$$.
 
 $$(*) \Rightarrow 0 \leq \langle J'(u_*), u_* + \varepsilon e - u_*\rangle = \varepsilon\langle J'(u_*), e\rangle
 \Rightarrow \langle J'(u_*), e\rangle = 0 \Rightarrow J'(u_*) = 0.$$
@@ -515,8 +530,7 @@ $$
 $$
 
 
-#
-Метод проекции градиента
+## Метод проекции градиента
 
 Источник:
 
@@ -702,7 +716,7 @@ P_U(u) = \begin{cases}
 \end{cases}
 $$
 
-_Доказательство. _Требуется доказать, что
+_Доказательство._ Требуется доказать, что
 $$\left\langle \bar u + R\dfrac{u - \bar u}{\|u - \bar u\|} - u, v - \bar u - R\dfrac{u - \bar u}{\|u - \bar u\|} \right\rangle \geq 0$$.
 
 $$\left\langle \bar u + R\dfrac{u - \bar u}{\|u - \bar u\|} - u, v - \bar u - R\dfrac{u - \bar u}{\|u - \bar u\|} \right\rangle = \left( \dfrac{R}{\|u - \bar u\|} - 1\right)
