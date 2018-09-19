@@ -115,13 +115,13 @@ public:
 
 <множитель> ::= число | ( <выражение> )
 
-Для строки $$5*(3+7)+2*3$$ синтаксическое дерево будет следующим.
+Для строки `5*(3+7)+2*3` синтаксическое дерево будет следующим.
 
 ![Рис. 2](/images/translator/fig2.png)
 
 Как осуществить синтаксический анализ? Из первого правила подстановки видно, что задача разбора выражения сводится к задаче разбора слагаемого. Если после слагаемого идёт +, то следует применить правило подстановки <выражение> ::= <слагаемое> + <выражение>. В противном случае следует применить правило подстановки <выражение> ::= <слагаемое>. Аналогично осуществляется разбор слагаемого.
 
-Для реализации описанного алгоритма удобно использовать рекурсивные функции ParseExpression(), ParseTerm() и ParseFactor().
+Для реализации описанного алгоритма удобно использовать рекурсивные функции `ParseExpression()`, `ParseTerm()` и `ParseFactor()`.
 
 Для решения задачи синтаксического анализа программы на языке C, прежде всего, необходимо разработать подходящие типы и структуры данных. Нужно определиться, что должно быть на выходе процедуры синтаксического анализа.
 
@@ -133,13 +133,13 @@ public:
 
 ```cpp
 enum ExprNodeClass {
-EXPR_NODE_CLASS_EXP,
-EXPR_NODE_CLASS_ASSIGNMENT_EXP,
-EXPR_NODE_CLASS_CONDITIONAL_EXP,
-EXPR_NODE_CLASS_BINARY_EXP,
-EXPR_NODE_CLASS_UNARY_EXP,
-EXPR_NODE_CLASS_POSTFIX_EXP,
-EXPR_NODE_CLASS_PRIMARY_EXP
+  EXPR_NODE_CLASS_EXP,
+  EXPR_NODE_CLASS_ASSIGNMENT_EXP,
+  EXPR_NODE_CLASS_CONDITIONAL_EXP,
+  EXPR_NODE_CLASS_BINARY_EXP,
+  EXPR_NODE_CLASS_UNARY_EXP,
+  EXPR_NODE_CLASS_POSTFIX_EXP,
+  EXPR_NODE_CLASS_PRIMARY_EXP
 }
 ```
 
@@ -276,7 +276,6 @@ struct CompoundStat : public Stat {
   std::vector<Stat*> stat_list;
 };
 ```
-
 
 ### Список литературы
 
