@@ -39,6 +39,8 @@ http://stu.scask.ru
 
 [Открытое образование](https://openedu.ru)
 
+[НОУ Интуит](https://www.intuit.ru)
+
 [Хекслет](https://ru.hexlet.io)
 
 [Лекториум](https://www.lektorium.tv)
