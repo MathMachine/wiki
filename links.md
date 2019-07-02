@@ -2,7 +2,7 @@
 
 ### Электронные библиотеки
 
-[Library Genesis](libgen.io) - очень обширная библиотека книг на русском и английском языках
+[Library Genesis](http://gen.lib.rus.ec/) - очень обширная библиотека книг на русском и английском языках
 
 [Книги по математике и физике](http://ph4s.ru/books_mat.html)
 
@@ -12,26 +12,23 @@
 
 [Методички Р.Р. Ахмерова](http://w.ict.nsc.ru/books/textbooks/akhmerov/)
 
-[Всё для студента](twirpx.com)
+[Всё для студента](https://www.twirpx.com/)
 
-[Единое окно доступа к электронным ресурсам](window.edu.ru)
+[Единое окно к образовательным ресурсам](http://window.edu.ru/)
 
 [EqWorld](http://eqworld.ipmnet.ru/en/library/mathematics.htm)
 
 [Каталог электронных библиотек](http://eqworld.ipmnet.ru/ru/library/otherlibs.htm)
 
-http://lib.alnam.ru
-
-http://edu.sernam.ru
-
-http://stu.scask.ru
+Научная библиотека избранных естественно-научных изданий:
+[[1]](http://lib.alnam.ru) [[2]](http://edu.sernam.ru) [[3]](http://stu.scask.ru)
 
 [Поиск книг](http://poiskknig.ru)
 
 
 ### Массовые онлайн-курсы
 
-[Универсариум](universarium.org/)
+[Универсариум](https://universarium.org/)
 
 [Stepik](http://welcome.stepik.org/ru)
 
