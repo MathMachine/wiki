@@ -4,6 +4,8 @@
 
 [Введение](algorithms_introduction.md)
 
+[Длинные числа](algorithms_long_numbers.md)
+
 
 ### Источники
 
