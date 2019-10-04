@@ -183,22 +183,22 @@ $m$-ичной с.с." (инициализация длинного числа);
 
 Тогда алгоритм перевода можно записать так:
 
-&nbsp;&nbsp;&nbsp; ${\tt alg}(p, q : {\tt Int};\; a : {\tt LongInt}\langle p \rangle) \to
-x : {\tt LongInt}\langle q \rangle = \{$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $k = {\tt length}(a)$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${\tt LongInt}\langle q \rangle : x
-\leftarrow {\tt init}\langle q \rangle(a[0])$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${\tt LongInt}\langle q \rangle : y \leftarrow 1$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${\tt LongInt}\langle q \rangle : \overline{p} \leftarrow {\tt init}\langle q \rangle(p)$<br/>
+&nbsp;&nbsp;&nbsp; $${\tt alg}(p, q : {\tt Int};\; a : {\tt LongInt}\langle p \rangle) \to
+x : {\tt LongInt}\langle q \rangle = \{$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$k = {\tt length}(a)$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $${\tt LongInt}\langle q \rangle : x
+\leftarrow {\tt init}\langle q \rangle(a[0])$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $${\tt LongInt}\langle q \rangle : y \leftarrow 1$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $${\tt LongInt}\langle q \rangle : \overline{p} \leftarrow {\tt init}\langle q \rangle(p)$$<br/>
 <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${\bf for}\; i \leftarrow 1 .. k \; \{$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $y = p^{i-1}, \; x = \widetilde a_0 + \widetilde a_1 p + \dots + \widetilde a_{i-1} p^{i-1}$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $y \leftarrow y \cdot \overline{p}$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $x \leftarrow x + a[i] \cdot y$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $y = p^i, \; x = \widetilde a_0 + \widetilde a_1 p + \dots + \widetilde a_i p^i$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $\}$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $y = p^k, \; x = \widetilde a_0 + \widetilde a_1 p + \dots + \widetilde a_k p^k$<br/>
-&nbsp;&nbsp;&nbsp; $\}$
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $${\bf for}\; i \leftarrow 1 .. k \; \{$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $$y = p^{i-1}, \; x = \widetilde a_0 + \widetilde a_1 p + \dots + \widetilde a_{i-1} p^{i-1}$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$y \leftarrow y \cdot \overline{p}$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$x \leftarrow x + a[i] \cdot y$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $$y = p^i, \; x = \widetilde a_0 + \widetilde a_1 p + \dots + \widetilde a_i p^i$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$\}$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $$y = p^k, \; x = \widetilde a_0 + \widetilde a_1 p + \dots + \widetilde a_k p^k$$<br/>
+&nbsp;&nbsp;&nbsp; $$\}$$
 
 
 ### 4. Структура данных "длинное число по модулю $m$"
