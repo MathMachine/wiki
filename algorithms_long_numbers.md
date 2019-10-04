@@ -151,13 +151,13 @@ $a \in \mathbb N$ в $m$-ичную систему счисления при п�
 
 Пусть $a \in \mathbb N$,
 
-$\widetilde a$ -- представление числа $a$ в с.с. по основанию $p$,
+$$\widetilde a$$ -- представление числа $a$ в с.с. по основанию $p$,
 
-$\overline{a}$ -- представление числа $a$ в с.с. по основанию $q$:
+$$\overline{a}$$ -- представление числа $a$ в с.с. по основанию $q$:
 
-$\widetilde a = (\widetilde a_0, \widetilde a_1, \dots, \widetilde a_k),
+$$\widetilde a = (\widetilde a_0, \widetilde a_1, \dots, \widetilde a_k)$$,
 
-$\overline a = (\overline a_0, \overline a_1, \dots, \overline a_l).
+$$\overline a = (\overline a_0, \overline a_1, \dots, \overline a_l)$$.
 
 Дано: $\widetilde a$. Найти: $\overline a$.
 
