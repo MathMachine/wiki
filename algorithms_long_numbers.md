@@ -49,11 +49,11 @@ $$0 \leq a_i < m, \; a_k \neq 0$$.
 
 Построим алгоритм:
 
-&nbsp;&nbsp;&nbsp; $$i \leftarrow 0$$
-&nbsp;&nbsp;&nbsp; $${\tt \bf while}\; a > 0 \; \{$$
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$a_i \leftarrow a \,{\tt mod}\, m$$
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$a \leftarrow [a/m]$$
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$i \leftarrow i + 1$$
+&nbsp;&nbsp;&nbsp; $$i \leftarrow 0$$<br/>
+&nbsp;&nbsp;&nbsp; $${\tt \bf while}\; a > 0 \; \{$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$a_i \leftarrow a \;{\tt mod}\; m$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$a \leftarrow [a/m]$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$i \leftarrow i + 1$$<br/>
 &nbsp;&nbsp;&nbsp; $$\}$$
 
 
