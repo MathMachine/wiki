@@ -66,7 +66,7 @@ $$[a/m]$$ -- неполное частное от деления $$a$$ на $$m$
 
 $$\sqsupset a, b \in \mathbb Z, \; b \neq 0$$.
 
-$$\exists ! q, r \in \mathbb Z : a = bq + r, \; 0 \leq r < \|b\|$$.
+$$\exists ! \; q, r \in \mathbb Z : a = bq + r, \; 0 \leq r < \vert b \vert$$.
 
 $$q$$ -- неполное частное, $$r$$ -- остаток.
 <br/>
@@ -86,7 +86,7 @@ $$\dots$$.
 $$a_{k-1} = a^{(k-1)} \;{\rm mod}\; m, \; a^{(k)} = [a^{(k-1)}/m] \; \Rightarrow \; a^{(k-1)} = a^{(k)}m + a_{k-1}$$.
 
 Пусть $$k$$ -- наименьший индекс, при котором $$0 < a^{(k-1)} < m$$.
-Тогда $$a_k = a^{(k-1)} \mod m, \; a^{(k+1)} = [a^{(k)}/m] = 0 \; \Rightarrow \; a^{(k)} = a_k$$.
+Тогда $$a_k = a^{(k-1)} \;{\rm mod}\; m, \; a^{(k+1)} = [a^{(k)}/m] = 0 \; \Rightarrow \; a^{(k)} = a_k$$.
 
 Заметим, что $$0 < a_k < m, \;\; 0 \leq a_i < m, \; i = 0, \dots, k-1$$.
 
