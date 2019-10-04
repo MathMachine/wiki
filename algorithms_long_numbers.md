@@ -51,10 +51,43 @@ $$0 \leq a_i < m, \; a_k \neq 0$$.
 
 &nbsp;&nbsp;&nbsp; $$i \leftarrow 0$$<br/>
 &nbsp;&nbsp;&nbsp; $${\tt \bf while}\; a > 0 \; \{$$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$a_i \leftarrow a \;{\tt mod}\; m$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$a_i \leftarrow a \;{\rm mod}\; m$$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$a \leftarrow [a/m]$$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$i \leftarrow i + 1$$<br/>
 &nbsp;&nbsp;&nbsp; $$\}$$
+
+Здесь $$a \;{\rm mod}\; m$$ -- остаток от деления $$a$$ на $$m$$,
+$$[a/m]$$ -- неполное частное от деления $$a$$ на $$m$$
+($$[x]$$ -- целая часть числа $$x$$).
+
+Напомним теорему о делении с остатком.
+
+**Теорема.** [Фаддеев, с. 8] $$\sqsupset a, b \in \mathbb Z, \; b \neq 0$$.
+
+$$\exists ! q, r \in \mathbb Z : a = bq + r, \; 0 \leq r < |b|$$.
+
+$$q$$ -- неполное частное, $$r$$ -- остаток.
+<br/>
+
+Обозначим через $a'$ величину $$a$$ после выполнения одной итерации цикла,
+через $$a''$$ -- после двух, $$a'''$$ -- после трех и т.д.,
+$$a^{(k)}$$ -- величина $$a$$ после выполнения $$k$$ итераций цикла.
+
+$$a_0 = a \mod m, \; a' = [a/m] \; \Rightarrow \; a = a'm + a_0$$,
+
+$$a_1 = a' \mod m, \; a'' = [a'/m] \; \Rightarrow \; a' = a''m + a_1$$,
+
+$$a_2 = a'' \mod m, \; a''' = [a''/m] \; \Rightarrow \; a'' = a'''m + a_2$$,
+
+$$\dots$$.
+
+$$a_{k-1} = a^{(k-1)} \mod m, \; a^{(k)} = [a^{(k-1)}/m] \; \Rightarrow \; a^{(k-1)} = a^{(k)}m + a_{k-1}$$.
+
+Пусть $$k$$ -- наименьший индекс, при котором $$0 < a^{(k-1)} < m$$.
+Тогда $$a_k = a^{(k-1)} \mod m, \; a^{(k+1)} = [a^{(k)}/m] = 0 \; \Rightarrow \; a^{(k)} = a_k$$.
+
+Заметим, что $$0 < a_k < m, \;\; 0 \leq a_i < m, \; i = 0, \dots, k-1$$.
+
 
 
 
