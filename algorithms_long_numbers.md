@@ -45,6 +45,18 @@ $$0 \leq a_i < m, \; a_k \neq 0$$.
 Строка $$\overline{a}$$ называется представлением числа $$a$$ в с.с.
 по основанию $$m$$.
 
+*Доказательство существования.*
+
+Построим алгоритм:
+
+&nbsp;&nbsp;&nbsp; $$i \leftarrow 0$$
+&nbsp;&nbsp;&nbsp; $${\tt \bf while}\; a > 0 \; \{$$
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$a_i \leftarrow a \,{\tt mod}\, m$$
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$a \leftarrow [a/m]$$
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$i \leftarrow i + 1$$
+&nbsp;&nbsp;&nbsp; $$\}$$
+
+
 
 ### Литература
 
