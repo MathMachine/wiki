@@ -32,11 +32,13 @@ $$+, -, \cdot, /$$.
 
 Докажем теорему о существовании и единственности такого представления.
 
-**Теорема.** $$\sqsubset m \in \mathbb N, \; m > 1$$.
+**Теорема.** $$\sqsupset m \in \mathbb N, \; m > 1$$.
 
-$$\forall a \in \mathbb N \, \exists ! \overline{a} = (a_0, a_1, \dots, a_k) :$$
+$$\forall a \in \mathbb N \, \, \exists ! \; \overline{a} \in A^*, \; A = 0 .. m-1$$,
 
-$$a = a_k m^k + a_{k-1} m^{k-1} + \dots + a_1 m + a_0$$
+$$\overline{a} = (a_0, a_1, \dots, a_k)$$:
+
+$$a = a_k m^k + a_{k-1} m^{k-1} + \dots + a_1 m + a_0$$,
 
 $$0 \leq a_i < m, \; a_k \neq 0$$.
 
