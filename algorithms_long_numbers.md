@@ -50,7 +50,7 @@ $$0 \leq a_i < m, \; a_k \neq 0$$.
 Построим алгоритм:
 
 &nbsp;&nbsp;&nbsp; $$i \leftarrow 0$$<br/>
-&nbsp;&nbsp;&nbsp; $${\tt \bf while}\; a > 0 \; \{$$<br/>
+&nbsp;&nbsp;&nbsp; $${\bf while}\; a > 0 \; \{$$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$a_i \leftarrow a \;{\rm mod}\; m$$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$a \leftarrow [a/m]$$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$i \leftarrow i + 1$$<br/>
@@ -146,7 +146,62 @@ $\mathbb N$ и строками $A^* $, $A = 0 .. m-1$, с ненулевым п
 $a \in \mathbb N$ в $m$-ичную систему счисления при помощи операций
 деления нацело и взятия остатка от деления.
 
+
 ### 3. Преобразование АТД "целое число в $p$-ичной с.с." в АТД "целое число в $q$-ичной с.с."
+
+Пусть $a \in \mathbb N$,
+
+$\widetilde a$ -- представление числа $a$ в с.с. по основанию $p$,
+
+$\overline{a}$ -- представление числа $a$ в с.с. по основанию $q$:
+
+$\widetilde a = (\widetilde a_0, \widetilde a_1, \dots, \widetilde a_k),
+
+$\overline a = (\overline a_0, \overline a_1, \dots, \overline a_l).
+
+Дано: $\widetilde a$. Найти: $\overline a$.
+
+По определению:
+$$
+a = \widetilde a_0 + \widetilde a_1 p + \widetilde a_2 p^2 + \dots + \widetilde a_k p^k.
+$$
+
+Тогда если все слагаемые имеют тип "целое число в $q$-ичной с.с.", то по этой
+формуле мы найдем объект $a$, который будет иметь такой же тип -- это и будет
+представление числа $a$ в $q$-ичной с.с.
+
+Предположим, что в АТД "целое число в $m$-ичной с.с." реализованы следующие
+операции:
+
+- преобразование числа из АТД "32-битное целое число" в АТД "целое число в
+$m$-ичной с.с." (инициализация длинного числа);
+
+- сложение чисел АТД "целое число в $m$-ичной с.с." (сложение длинных чисел);
+
+- умножение числа АТД "целое число в $m$-ичной с.с. на число АТД
+"32-битное целое число" (умножение длинного числа на короткое).
+
+Тогда алгоритм перевода можно записать так:
+
+&nbsp;&nbsp;&nbsp; ${\tt alg}(p, q : {\tt Int};\; a : {\tt LongInt}\langle p \rangle) \to
+x : {\tt LongInt}\langle q \rangle = \{$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $k = {\tt length}(a)$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${\tt LongInt}\langle q \rangle : x
+\leftarrow {\tt init}\langle q \rangle(a[0])$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${\tt LongInt}\langle q \rangle : y \leftarrow 1$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${\tt LongInt}\langle q \rangle : \overline{p} \leftarrow {\tt init}\langle q \rangle(p)$<br/>
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${\bf for}\; i \leftarrow 1 .. k \; \{$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $y = p^{i-1}, \; x = \widetilde a_0 + \widetilde a_1 p + \dots + \widetilde a_{i-1} p^{i-1}$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $y \leftarrow y \cdot \overline{p}$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $x \leftarrow x + a[i] \cdot y$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $y = p^i, \; x = \widetilde a_0 + \widetilde a_1 p + \dots + \widetilde a_i p^i$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $\}$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $y = p^k, \; x = \widetilde a_0 + \widetilde a_1 p + \dots + \widetilde a_k p^k$<br/>
+&nbsp;&nbsp;&nbsp; $\}$
+
+
+### 4. Структура данных "длинное число по модулю $m$"
 
 
 ### Литература
