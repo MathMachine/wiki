@@ -190,11 +190,10 @@ x : {\tt LongInt}\langle q \rangle = \{$$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $${\tt LongInt}\langle q \rangle : x
 \leftarrow {\tt init}\langle q \rangle(a[0])$$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $${\tt LongInt}\langle q \rangle : y \leftarrow 1$$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $${\tt LongInt}\langle q \rangle : \overline{p} \leftarrow {\tt init}\langle q \rangle(p)$$<br/>
 <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $${\bf for}\; i \leftarrow 1 .. k \; \{$$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $$y = p^{i-1}, \; x = \widetilde a_0 + \widetilde a_1 p + \dots + \widetilde a_{i-1} p^{i-1}$$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$y \leftarrow y \cdot \overline{p}$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$y \leftarrow y \cdot p$$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$x \leftarrow x + a[i] \cdot y$$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $$y = p^i, \; x = \widetilde a_0 + \widetilde a_1 p + \dots + \widetilde a_i p^i$$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$\}$$<br/>
