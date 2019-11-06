@@ -1,0 +1,1414 @@
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Аналитическая геометрия на плоскости</title>
+<script>
+window.onload=function(){
+  var x;
+  x = document.getElementsByClassName("controls");
+
+  var xl = x.length;
+  for(i = 0; i < xl; i++) {
+    try {
+      x[0].parentNode.removeChild(x[0]);
+    } catch (e) {}
+  }
+
+  line = {
+    x: function(t){ return t*60 },
+    y: function(t){ return 100 }
+  }
+
+  makeRollingPlotter("cycloid", line, 20, -0.5, 5.2, -1);
+
+  var circle = makeCircleFun(150, 150, 30);
+  makeRollingPlotter("epicycloid", circle, 27);
+  makeRollingPlotter("cardioid", circle, 30);
+  var bigCircle = makeCircleFun(150, 150, 80);
+  makeRollingPlotter("hypocycloid",bigCircle, 33, 0, 0, -1);
+  makeRollingPlotter("astroid", bigCircle, 20, 0, 0, -1);
+
+  var ellipsF = {
+    x: function(t) {return this.a * Math.cos(t) + 150},
+    y: function(t) {return this.b * Math.sin(t) + 150},
+    a: 100,
+    b: 50
+  };
+
+  makeGenericPlotter("ellips", ParametricPlotter, ellipsF, 0, 2*Math.PI);
+
+  var nycomedF = {
+    f: function(p) {return this.a / Math.cos(p) + this.b },
+    a: 30,
+    b: 70
+  };
+
+  makeGenericPlotter("nycomed", PolarPlotter, nycomedF, 0, 10);
+
+  var pascalF = {
+    f: function(p) {return this.r * 2 * Math.cos(p) + this.b },
+    r: 40,
+    b: 30
+  };
+
+  makeGenericPlotter("pascal", PolarPlotter, pascalF, 0, 10);
+
+  var cassiniF = {
+    f: function(x, y) {return Math.pow((x*x + y*y + this.c*this.c), 2) - 4 * x*x*this.c*this.c - Math.pow(this.b, 4)},
+    c: 70,
+    b: 80
+  }
+
+  makeGenericPlotter("cassini", ImplicitPlotter, cassiniF);
+
+  var roseF = {
+    f: function(p) {return this.a * Math.sin(2*p)},
+    a: 110
+  };
+
+  makeGenericPlotter("rose", PolarPlotter, roseF, 0, 2*Math.PI);
+
+  var archimedesF = {
+    f: function(p) {return (this.v/this.w) * p},
+    v: 120,
+    w: 20
+  };
+
+  makeGenericPlotter("archimedes", PolarPlotter, archimedesF, 0, 4 * 2 * Math.PI);
+
+  var cyssoidF = {
+    f: function(p) {return 2*this.a*Math.pow(Math.sin(p),2)/Math.cos(p)},
+    a: 60
+  };
+
+  makeGenericPlotter("cyssoid", PolarPlotter, cyssoidF, 0, 2 * Math.PI);
+
+  var verzierF = {
+    f: function(x) {return 50*Math.pow(this.a, 2)/(x*x + Math.pow(this.a, 2))},
+    a: 60
+  };
+
+  makeGenericPlotter("verzier", SimplePlotter, verzierF, -150, 150);
+
+  var circleF = {
+    f: function(x, y) {return x*x + y*y - this.r*this.r},
+    r: 60
+  };
+
+  makeGenericPlotter("circle", ImplicitPlotter, circleF);
+
+  var hyperboleF = {
+    f: function(x, y) {return x*x/Math.pow(this.a, 2) - y*y/Math.pow(this.b, 2) - 1},
+    a: 20,
+    b: 30
+  };
+
+  makeGenericPlotter("hyperbola", ImplicitPlotter, hyperboleF);
+
+  var paraboleF = {
+    f: function(x, y) {return y*y - 2*this.p*x},
+    p: 30
+  };
+
+  makeGenericPlotter("parabola", ImplicitPlotter, paraboleF);
+}
+</script>
+
+<style>
+.outline-f {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.inline-f {
+  vertical-align: middle;
+}
+
+canvas {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+#main {
+  width: 60%;
+  margin-left: 10%;
+  margin-right: 20%;
+  font-family: sans-serif;
+  line-height: 1.6em;
+}
+
+.illustration {
+  width: 100%;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.canvas_host {
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px #aaaaaa solid;
+  width: 300px;
+}
+
+.controls {
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+}
+
+.control {
+  width: 100%;
+}
+</style>
+</head>
+
+<body>
+	<div id="main">
+<h1>Аналитическая геометрия на плоскости</h1>
+<section>
+<p>Первая задача аналитической геометрии – представление
+геометрической фигуры уравнением или неравенством, системой уравнений
+или неравенств на основе применения координат. Вторая задача
+аналитической геометрии – исследовать, какие геометрические фигуры
+представляются теми или иными уравнениями.</p>
+
+<p>Пусть <img class="inline-f" src="chart/chart_091.png">.
+Уравнение  <img class="inline-f" src="chart/chart_440.png"> <em>задает линию или кривую</em>, если
+</p><ol>
+  <li>координаты каждой точки линии удовлетворяют этому уравнению и</li>
+  <li>координаты точки, не принадлежащей линии, не удовлетворяют</li>
+этому уравнению.
+</ol>
+При этом уравнение может задавать точку, отрезок или пустое множество.
+Уравнение называется <em>алгебраическим степени</em> <img class="inline-f" src="chart/chart_457.png">, если его левая часть
+представляет собой многочлен степени  <img class="inline-f" src="chart/chart_457.png"> относительно <img class="inline-f" src="chart/chart_129.png"> и <img class="inline-f" src="chart/chart_091.png"> с
+численными коэффициентами.
+<p></p>
+
+<h3>Упражнения</h3>
+
+<p class="exercise"><em>Циклоидой</em> называется траектория, описываемая точкой <img class="inline-f" src="chart/chart_028.png">
+ окружности радиуса r, катящейся без скольжения по данной прямой <img class="inline-f" src="chart/chart_192.png">.
+Приняв прямую за ось абсцисс, а начальное положение точки <img class="inline-f" src="chart/chart_028.png">
+ за начало координат, напишите уравнение циклоиды и постройте ее.
+</p>
+<p class="solution">
+Пусть <img class="inline-f" src="chart/chart_074.png"> - центр
+катящейся окружности, а <img class="inline-f" src="chart/chart_205.png"> - основание перпендикуляра, опущенного из
+точки <img class="inline-f" src="chart/chart_074.png"> на ось абсцисс. Примем в качестве параметра угол, который
+образует луч <img class="inline-f" src="chart/chart_302.png"> с лучом <img class="inline-f" src="chart/chart_366.png"> т. е. <img class="inline-f" src="chart/chart.png">. Если <img class="inline-f" src="chart/chart_465.png">
+- основание перпендикуляра, опущенного из точки <img class="inline-f" src="chart/chart_028.png"> на ось абсцисс, а
+<img class="inline-f" src="chart/chart_384.png"> - основание перпендикуляра, опущенного из точки <img class="inline-f" src="chart/chart_028.png"> на ось ординат, то
+<img class="outline-f" src="chart/chart_353.png">
+<img class="outline-f" src="chart/chart_504.png">
+
+Получили следующее параметрическое задание циклоиды
+<img class="outline-f" src="chart/chart_461.png">
+<img class="outline-f" src="chart/chart_126.png">
+
+Исключив <img class="inline-f" src="chart/chart_087.png">, получим уравнение циклоиды в прямоугольных
+декартовых координатах. Циклоида - линия периодическая с периодом <img class="inline-f" src="chart/chart_474.png">
+</p>
+<p class="key">Параметрическое задание: <img class="inline-f" src="chart/chart_179.png">.
+ В декартовых координатах: <img class="inline-f" src="chart/chart_493.png">.
+</p>
+
+<div id="cycloid" class="illustration">
+<div class="canvas_host"><canvas width="300" height="200"></canvas></div>
+</div>
+
+<p class="exercise">
+ <em>Эпициклоидой</em> называется траектория, описываемая точкой <img class="inline-f" src="chart/chart_028.png"> окружности радиуса
+<img class="inline-f" src="chart/chart_043.png">, катящейся без скольжения по внешней стороне другой окружности радиуса <img class="inline-f" src="chart/chart_305.png">.
+ Примем центр <img class="inline-f" src="chart/chart_278.png"> неподвижной окружности за начало прямоугольной декартовой
+cистемы координат, а за параметр - угол <img class="inline-f" src="chart/chart_290.png">, где <img class="inline-f" src="chart/chart_417.png"> - центр катящейся окружности, <img class="inline-f" src="chart/chart_203.png"> - точка на положительной полуоси <img class="inline-f" src="chart/chart_184.png">. Напишите параметрическое уравнение эпициклоиды.
+</p><p class="key">
+<img class="inline-f" src="chart/chart_013.png">
+</p>
+
+<div id="epicycloid" class="illustration">
+<div class="canvas_host"><canvas width="300" height="300"></canvas></div>
+</div>
+
+<em>Кардиоидой</em>  называется кривая в частном случае, когда  <img class="inline-f" src="chart/chart_427.png">. Напишите уравнение кардиоиды и постройте ее.
+<p></p>
+
+<div id="cardioid" class="illustration">
+<div class="canvas_host"><canvas width="300" height="300"></canvas></div>
+</div>
+
+<p class="exercise">
+ <em>Гипоциклоидой</em> называется траектория, описываемая точкой <img class="inline-f" src="chart/chart_028.png"> окружности радиуса <img class="inline-f" src="chart/chart_076.png"> катящейся без скольжения по внутренней стороне окружности радиуса <img class="inline-f" src="chart/chart_305.png">. Примем центр <img class="inline-f" src="chart/chart_278.png"> неподвижной окружности за начало прямоугольной декартовой системы координат, а за параметр - угол <img class="inline-f" src="chart/chart_290.png">, где <img class="inline-f" src="chart/chart_417.png"> - центр катящейся окружности, <img class="inline-f" src="chart/chart_203.png"> - точка на положительной полуоси <img class="inline-f" src="chart/chart_184.png">. Напишите параметрическое уравнение гипоциклоиды.
+</p><p class="key">
+<img class="outline-f" src="chart/chart_131.png">
+</p>
+
+<div id="hypocycloid" class="illustration">
+<div class="canvas_host"><canvas width="300" height="300"></canvas></div>
+</div>
+
+<p class="exercise">
+<em>Астроидой</em>  называется кривая в частном случае, когда <img class="inline-f" src="chart/chart_324.png"> Напишите уравнение астроиды и постройте ее.
+</p>
+
+<div id="astroid" class="illustration">
+<div class="canvas_host"><canvas width="300" height="300"></canvas></div>
+</div>
+
+<p class="exercise">
+ Дана прямая <img class="inline-f" src="chart/chart_192.png"> и точка <img class="inline-f" src="chart/chart_074.png">, отстоящая от нее на расстоянии  <img class="inline-f" src="chart/chart_419.png">. Через точку <img class="inline-f" src="chart/chart_074.png"> проводятся всевозможные прямые, на каждой из которых от точки <img class="inline-f" src="chart/chart_150.png"> пересечения с прямой <img class="inline-f" src="chart/chart_192.png"> откладывается в обе стороны отрезок, равный <img class="inline-f" src="chart/chart_214.png">. Геометрическое место концов этих отрезков называется <em>конхоидой Никомеда</em>. Примем точку <img class="inline-f" src="chart/chart_074.png"> за полюс полярной системы и направим полярную ось перпендикулярно к прямой <img class="inline-f" src="chart/chart_192.png">. Напишите уравнение конхоиды Никомеда и постройте ее.
+</p><p class="solution">Пусть  <img class="inline-f" src="chart/chart_468.png"> - произвольная прямая, проходящая через <img class="inline-f" src="chart/chart_074.png"> и пересекающая прямую  <img class="inline-f" src="chart/chart_188.png"> в точке <img class="inline-f" src="chart/chart_150.png">. Точки <img class="inline-f" src="chart/chart_465.png"> и <img class="inline-f" src="chart/chart_384.png">, лежащие на этой прямой и отстоящие от точки <img class="inline-f" src="chart/chart_150.png">
+на расстоянии  <img class="inline-f" src="chart/chart_214.png">, принадлежат искомому геометрическому месту точек. Если <img class="inline-f" src="chart/chart_046.png"> и <img class="inline-f" src="chart/chart_361.png"> - обобщенные полярные координаты точек <img class="inline-f" src="chart/chart_465.png"> и <img class="inline-f" src="chart/chart_384.png">, то
+<img class="outline-f" src="chart/chart_238.png">
+<img class="outline-f" src="chart/chart_423.png">
+</p><p class="key">В обобщенной полярной системе кривая задается уравнением
+<img class="inline-f" src="chart/chart_015.png">
+</p>
+
+<div id="nycomed" class="illustration">
+<div class="canvas_host"><canvas width="300" height="200"></canvas></div>
+</div>
+
+<p class="exercise">
+ <em>Конхоидой</em>  данной кривой называется кривая, получающаяся при
+увеличении или уменьшении полярного радиуса каждой точки данной кривой
+на постоянный отрезок.
+<em>Улиткой Паскаля</em>  называется конхоида окружности, если за полюс <img class="inline-f" src="chart/chart_278.png"> выбрана точка на окружности. Напишите уравнение улитки Паскаля, приняв диаметр, проходящий через точку <img class="inline-f" src="chart/chart_278.png">, за полярную ось.
+</p><p class="solution">Если <img class="inline-f" src="chart/chart_052.png"> - уравнение данной кривой в полярных координатах, то
+<img class="inline-f" src="chart/chart_339.png"> - уравнение конхоиды, где <img class="inline-f" src="chart/chart_214.png">- отрезок, который откладывается от точек кривой.
+ </p><p class="key"> <img class="inline-f" src="chart/chart_055.png">
+</p>
+
+<p class="exercise">
+ Если <img class="inline-f" src="chart/chart_043.png"> - радиус данной окружности, а <img class="inline-f" src="chart/chart_214.png"> - постоянный отрезок, который откладывается на полярном радиусе, и если <img class="inline-f" src="chart/chart_066.png">, то улитка Паскаля является кардиоидой. Докажите это.
+</p>
+
+<div id="pascal" class="illustration">
+<div class="canvas_host"><canvas width="300" height="200"></canvas></div>
+</div>
+
+<p class="exercise">
+<em>Овалом Кассини</em>  называется геометрическое место точек
+плоскости, для которых произведение расстояний до двух фиксированных
+точек этой плоскости постоянно. Пусть <img class="inline-f" src="chart/chart_248.png"> и <img class="inline-f" src="chart/chart_470.png">  - фиксированные точки, <img class="inline-f" src="chart/chart_269.png"> - постоянное число и <img class="inline-f" src="chart/chart_390.png">. Примем направленную прямую <img class="inline-f" src="chart/chart_067.png"> за ось абсцисс, а середину отрезка  <img class="inline-f" src="chart/chart_067.png"> за начало координат. Напишите уравнение овала Кассини.
+</p><p class="solution">  Для  <img class="inline-f" src="chart/chart_490.png"> и <img class="inline-f" src="chart/chart_232.png"> соотношение <img class="inline-f" src="chart/chart_401.png"> запишется так:
+<img class="inline-f" src="chart/chart_374.png"> После элементарных преобразований получим
+<img class="outline-f" src="chart/chart_245.png">
+Отсюда
+<img class="outline-f" src="chart/chart_029.png">
+</p><p class="key">  При <img class="inline-f" src="chart/chart_435.png"> овал Кассини - замкнутая линия.
+При <img class="inline-f" src="chart/chart_495.png"> линия состоит из пары обособленных овалов.
+</p>
+
+<div id="cassini" class="illustration">
+<div class="canvas_host"><canvas width="300" height="300"></canvas></div>
+</div>
+
+<p class="exercise">
+<em>Лемнискатой Бернулли</em> называется овал Кассини в частном случае, когда <img class="inline-f" src="chart/chart_340.png">. Напишите уравнение лемнискаты Бернулли и постройте ее.
+</p><p class="key"> <img class="inline-f" src="chart/chart_044.png">
+</p>
+
+<p class="exercise">
+<em>Четырехлепестковой розой</em> называется геометрическое место
+оснований перпендикуляров, опущенных из вершины прямого угла на отрезок
+постоянной длины, который перемещается своими концами по сторонам
+прямого угла. Приняв за полюс полярной системы координат вершину прямого
+ угла и направим полярную ось по одной из сторон прямого угла. Длина
+отрезка <img class="inline-f" src="chart/chart_356.png">. Выведите уравнение четырехлепестковой розы и постройте ее.
+</p><p class="key"> <img class="inline-f" src="chart/chart_005.png">
+</p>
+
+<div id="rose" class="illustration">
+<div class="canvas_host"><canvas width="300" height="300"></canvas></div>
+</div>
+
+<p class="exercise">
+Луч <img class="inline-f" src="chart/chart_192.png">, исходящий из неподвижной точки <img class="inline-f" src="chart/chart_278.png">, вращается с постоянной угловой скоростью
+<img class="inline-f" src="chart/chart_022.png">. Точка <img class="inline-f" src="chart/chart_028.png">, имея начальное положение в точке <img class="inline-f" src="chart/chart_278.png">, движется по лучу <img class="inline-f" src="chart/chart_192.png"> равномерно
+со скоростью <img class="inline-f" src="chart/chart_213.png">. Траектория точки <img class="inline-f" src="chart/chart_028.png"> называется <em>спиралью Архимеда</em>. Примем <img class="inline-f" src="chart/chart_278.png"> за
+полюс. Напишите уравнение спирали Архимеда в полярной системе координат и постройте ее.
+     </p><p class="key"> <img class="inline-f" src="chart/chart_021.png">, где <img class="inline-f" src="chart/chart_387.png">.
+</p>
+
+<div id="archimedes" class="illustration">
+<div class="canvas_host"><canvas width="300" height="300"></canvas></div>
+</div>
+
+<p class="exercise">
+ Пусть  <img class="inline-f" src="chart/chart_059.png"> - диаметр некоторой окружности, а  <img class="inline-f" src="chart/chart_040.png"> - касательная к окружности, проведенная
+ в конце диаметра. Через точку <img class="inline-f" src="chart/chart_278.png"> проведена прямая, пересекающая окружность в точке <img class="inline-f" src="chart/chart_487.png">, а
+ касательную <img class="inline-f" src="chart/chart_040.png"> в точке <img class="inline-f" src="chart/chart_068.png">.   На луче <img class="inline-f" src="chart/chart_237.png"> от точки <img class="inline-f" src="chart/chart_278.png"> отложен отрезок <img class="inline-f" src="chart/chart_412.png">.
+ Геометрическое место точек <img class="inline-f" src="chart/chart_028.png"> называется <em>циссоидой Диоклеса</em>. Приняв точку <img class="inline-f" src="chart/chart_278.png"> за полюс полярной системы координат и направив ось по лучу <img class="inline-f" src="chart/chart_059.png">, выведите полярное уравнение циссоиды. Запишите уравнение в прямоугольной декартовой системе.
+</p><p class="key"><img class="inline-f" src="chart/chart_258.png">
+</p>
+
+<div id="cyssoid" class="illustration">
+<div class="canvas_host"><canvas width="300" height="300"></canvas></div>
+</div>
+
+<p class="exercise">
+Даны диаметрально противоположные точки <img class="inline-f" src="chart/chart_278.png"> и <img class="inline-f" src="chart/chart_417.png"> окружности диаметра <img class="inline-f" src="chart/chart_381.png"> и касательная <img class="inline-f" src="chart/chart_192.png"> к окружности в точке <img class="inline-f" src="chart/chart_417.png">. Пусть <img class="inline-f" src="chart/chart_074.png"> - произвольная точка окружности, <img class="inline-f" src="chart/chart_048.png"> - точка пересечения прямых <img class="inline-f" src="chart/chart_399.png"> и <img class="inline-f" src="chart/chart_192.png">, а <img class="inline-f" src="chart/chart_028.png"> - точка пересечения прямых, проведенных через <img class="inline-f" src="chart/chart_074.png"> и <img class="inline-f" src="chart/chart_048.png"> и перпендикулярных
+соответственно прямым <img class="inline-f" src="chart/chart_193.png"> и <img class="inline-f" src="chart/chart_192.png">. При движении точки <img class="inline-f" src="chart/chart_074.png"> по окружности точка <img class="inline-f" src="chart/chart_028.png"> описывает
+кривую, называемую <em>верзиерой</em>. Выведите уравнение верзиеры в прямоугольной декартовой системе.
+</p><p class="solution"> Следует из соотношения <img class="inline-f" src="chart/chart_281.png"> </p><p class="key">
+<img class="inline-f" src="chart/chart_267.png">
+</p>
+
+<div id="verzier" class="illustration">
+<div class="canvas_host"><canvas width="300" height="300"></canvas></div>
+</div>
+
+</section>
+
+<section>
+<h2>§12.1. Уравнения прямой на плоскости</h2>
+<p>
+<strong>Задача.</strong> Найдите уравнение прямой, проходящей через точку <img class="inline-f" src="chart/chart_275.png">
+ перпендикулярно ненулевому вектору <img class="inline-f" src="chart/chart_145.png">
+</p>
+<p>
+</p><p class="solution">Точка <img class="inline-f" src="chart/chart_512.png"> принадлежит прямой <img class="inline-f" src="chart/chart_344.png"> векторы
+<img class="inline-f" src="chart/chart_395.png"> и <img class="inline-f" src="chart/chart_273.png"> перпендикулярны
+<img class="inline-f" src="chart/chart_328.png">
+</p>
+<p class="key"> уравнение прямой, проходящей через данную точку <img class="inline-f" src="chart/chart_275.png">
+перпендикулярно ненулевому вектору <img class="inline-f" src="chart/chart_389.png"> имеет вид
+<img class="outline-f" src="chart/chart_189.png">
+Здесь  <img class="inline-f" src="chart/chart_186.png">, так как вектор <img class="inline-f" src="chart/chart_273.png"> ненулевой.</p>
+
+<p><strong>Основная теорема теории прямой на плоскости.</strong>
+Геометрическое место точек плоскости, координаты которых в некоторой
+ прямоугольной декартовой системе координат удовлетворяют уравнению
+<img class="outline-f" src="chart/chart_104.png">
+есть прямая, параллельная вектору <img class="inline-f" src="chart/chart_489.png"> и проходящая через точку
+<img class="inline-f" src="chart/chart_060.png"> <img class="inline-f" src="chart/chart_219.png">
+</p>
+<p><strong>Доказательство. </strong>
+Точка <img class="inline-f" src="chart/chart_469.png"> принадлежит прямой <img class="inline-f" src="chart/chart_344.png"> векторы
+<img class="inline-f" src="chart/chart_117.png"> и <img class="inline-f" src="chart/chart_489.png"> параллельны <img class="inline-f" src="chart/chart_306.png">
+или в силу того, что <img class="inline-f" src="chart/chart_348.png">, выполняется условие  <img class="inline-f" src="chart/chart_073.png">
+</p>
+<p>
+Уравнение
+<img class="outline-f" src="chart/chart_104.png">
+называется <em>общим уравнением прямой на плоскости</em>.
+</p>
+
+  <p>   <strong>Частные случаи общего уравнения</strong>. При<img class="inline-f" src="chart/chart_165.png"> получим
+	 уравнение прямой,  проходящей через начало координат. </p>
+	 <ul>
+     При <img class="inline-f" src="chart/chart_486.png"> получим уравнение прямой, параллельной оси абсцисс <img class="inline-f" src="chart/chart_063.png">
+     </ul>
+     <ul>
+     При <img class="inline-f" src="chart/chart_008.png"> получим ось абсцисс <img class="inline-f" src="chart/chart_218.png">.
+     </ul>
+     <ul>
+          При <img class="inline-f" src="chart/chart_293.png"> получим уравнение прямой, параллельной оси ординат <img class="inline-f" src="chart/chart_376.png">
+     </ul>
+     <ul>
+          При <img class="inline-f" src="chart/chart_121.png"> получим ось абсцисс <img class="inline-f" src="chart/chart_498.png">
+</ul>
+     <p>
+     Пусть <img class="inline-f" src="chart/chart_062.png"> - другая точка прямой. Тогда  <img class="inline-f" src="chart/chart_385.png">
+      Из уравнения <img class="inline-f" src="chart/chart_162.png"> и равенства <img class="inline-f" src="chart/chart_341.png"> получим
+	   <em>уравнение прямой, проходящей через точки две данные точки</em>,
+<img class="outline-f" src="chart/chart_224.png">
+Если это точки <img class="inline-f" src="chart/chart_206.png"> и <img class="inline-f" src="chart/chart_007.png"> пересечения прямой с осями координат, то
+<img class="outline-f" src="chart/chart_513.png">
+и получим <em>уравнение прямой в отрезках</em>
+<img class="outline-f" src="chart/chart_333.png">
+</p>
+<p>
+ Ненулевой вектор, параллельный прямой, называется <em>ее направляющим вектором</em>.
+ Пусть некоторый направляющий вектор данной прямой имеет координаты <img class="inline-f" src="chart/chart_347.png"> и <img class="inline-f" src="chart/chart_077.png">
+ Тогда уравнение (3) можно переписать в виде <em>канонического уравнения прямой</em>
+<img class="outline-f" src="chart/chart_316.png">
+</p>
+	Приравняв отношения к параметру <img class="inline-f" src="chart/chart_442.png"> получим <em>параметрическое уравнение</em>
+	<em>прямой на плоскости</em>
+<img class="outline-f" src="chart/chart_413.png">
+
+         Предположим, что в общем уравнении <img class="inline-f" src="chart/chart_053.png"> Тогда
+<img class="inline-f" src="chart/chart_183.png">
+ Введем обозначения  <img class="inline-f" src="chart/chart_402.png">, <img class="inline-f" src="chart/chart_391.png"> Уравнение
+<img class="outline-f" src="chart/chart_176.png">
+<em>называется уравнением с угловым коэффициентом </em> <img class="inline-f" src="chart/chart_140.png">  <em>и
+начальной ординатой </em><img class="inline-f" src="chart/chart_054.png">
+Если точка <img class="inline-f" src="chart/chart_379.png"> принадлежит прямой, то
+<img class="inline-f" src="chart/chart_295.png"> и после вычитания этого равенства из уравнения (5)
+получим уравнение прямой через угловой коэффициент и точку
+<img class="outline-f" src="chart/chart_099.png">
+
+Если <img class="inline-f" src="chart/chart_062.png"> - другая точка прямой, то <img class="inline-f" src="chart/chart_195.png">
+С другой стороны эта дробь равна тангенсу угла <img class="inline-f" src="chart/chart_400.png"> наклона прямой к оси Ох,
+т. е. угловой коэффициент прямой равен тангенсу угла наклона этой прямой к оси абсцисс
+<img class="outline-f" src="chart/chart_191.png">
+
+	Вернемся к самой первой задаче этого параграфа.
+<p><strong>Задача</strong>. Найдите уравнение прямой, проходящей через точку
+ <img class="inline-f" src="chart/chart_379.png"> перпендикулярно ненулевому вектору <img class="inline-f" src="chart/chart_145.png"></p>
+ <p class="solution"> Пусть <img class="inline-f" src="chart/chart_278.png"> - начало координат, а <img class="inline-f" src="chart/chart_028.png"> - произвольная
+ точка плоскости. Вектор <img class="inline-f" src="chart/chart_403.png"> называется радиусом вектором точки <img class="inline-f" src="chart/chart_360.png">
+ Точка <img class="inline-f" src="chart/chart_028.png"> принадлежит заданной прямой <img class="inline-f" src="chart/chart_344.png">  когда
+ векторы <img class="inline-f" src="chart/chart_221.png"> и  <img class="inline-f" src="chart/chart_268.png"> перпендикулярны,
+ т. е <img class="inline-f" src="chart/chart_326.png"> Обозначив число <img class="inline-f" src="chart/chart_006.png">
+ через <img class="inline-f" src="chart/chart_041.png">, получим векторное уравнение прямой
+<img class="outline-f" src="chart/chart_438.png">
+
+
+</p><h3>Упражнения</h3>
+<ol>
+	<li>
+ Докажите, что уравнение прямой, проходящей через две точки можно записать в виде
+<img class="outline-f" src="chart/chart_382.png">
+	</li><li>
+	 Докажите, что три точки лежат на одной прямой тогда и только тогда, когда
+<img class="outline-f" src="chart/chart_049.png">
+</li><li> Через каждую вершину треугольника <img class="inline-f" src="chart/chart_354.png"> проведите прямую,
+параллельную противоположной стороне, где <img class="inline-f" src="chart/chart_203.png">(1; -2 ), <img class="inline-f" src="chart/chart_150.png">(0; 3), <img class="inline-f" src="chart/chart_417.png">(1; 1).
+</li><li>
+Покажите, что четырехугольник  <img class="inline-f" src="chart/chart_398.png"> является трапецией, где
+ <img class="inline-f" src="chart/chart_203.png">(-2;2), <img class="inline-f" src="chart/chart_150.png">(-3;1), <img class="inline-f" src="chart/chart_349.png">
+    и
+  <img class="inline-f" src="chart/chart_201.png">
+  Составьте уравнение средней линии       и диагоналей трапеции.
+</li><li>
+ Даны уравнения двух смежных сторон параллелограмма <img class="inline-f" src="chart/chart_357.png"> и <img class="inline-f" src="chart/chart_289.png">  и
+ точка пересечения его диагоналей <img class="inline-f" src="chart/chart_033.png">. Напишите уравнения двух других сторон
+ параллелограмма.
+</li><li>Через точку <img class="inline-f" src="chart/chart_342.png"> проведите прямую, отсекающую равные отрезки на осях координат.
+</li><li> Вершины треугольника находятся в точках <img class="inline-f" src="chart/chart_415.png"> и
+     <img class="inline-f" src="chart/chart_508.png">; 7).</li>
+
+     Напишите уравнение
+<ul style="list-style-type: none">
+	 <li>а) биссектрисы внутреннего угла <img class="inline-f" src="chart/chart_239.png"></li>
+
+     <li>б) медианы, проведенной из вершины <img class="inline-f" src="chart/chart_239.png"></li>
+
+     <li>в) высоты, опущенной из вершины <img class="inline-f" src="chart/chart_370.png">.</li>
+</ul>
+
+<li> Даны середины сторон треугольника <img class="inline-f" src="chart/chart_354.png">, где <img class="inline-f" src="chart/chart_203.png">(2; -1 ), <img class="inline-f" src="chart/chart_150.png">(-3; -3),
+     <img class="inline-f" src="chart/chart_417.png">(-1; 0).
+</li><li>Уравнение движения точки <img class="inline-f" src="chart/chart_028.png"> имеет вид
+<img class="inline-f" src="chart/chart_424.png">
+
+Определите
+<ul style="list-style-type: none">
+<li>а) скорость точки <img class="inline-f" src="chart/chart_517.png">;</li>
+<li>б) координаты <img class="inline-f" src="chart/chart_028.png"> в момент времени <img class="inline-f" src="chart/chart_188.png">=3;</li>
+<li>в) в какой момент времени точка <img class="inline-f" src="chart/chart_028.png"> достигнет прямой <img class="inline-f" src="chart/chart_200.png"></li>
+ </ul>
+</li><li> Найдите проекцию точки <img class="inline-f" src="chart/chart_028.png">(5, -2) на прямую  <img class="inline-f" src="chart/chart_431.png">
+</li><li> Определите координаты точки, симметричной началу координат относительно
+прямой <img class="inline-f" src="chart/chart_516.png">
+</li><li>На прямой  <img class="inline-f" src="chart/chart_065.png"> найдите точку, сумма расстояний которой до
+точек  <img class="inline-f" src="chart/chart_028.png">(-5;0) и <img class="inline-f" src="chart/chart_323.png">(-3;4) наименьшая.
+</li></ol>
+</section>
+
+<section>
+<h2>§ 12.2. Взаимное расположение прямых на плоскости</h2>
+
+  <p>    Прямые, определяемые уравнениями
+<img class="outline-f" src="chart/chart_222.png">
+<img class="outline-f" src="chart/chart_355.png">
+параллельны тогда и только тогда, когда направляющие векторы <img class="inline-f" src="chart/chart_064.png">
+ и <img class="inline-f" src="chart/chart_003.png">  параллельны, отсюда <em>условие параллельности двух прямых</em>
+<img class="outline-f" src="chart/chart_515.png"></p>
+
+       <p>   Условия, при которых два уравнения определяют одну и ту же прямую
+<img class="outline-f" src="chart/chart_004.png"></p>
+
+<p>Все коэффициенты одного уравнения получаются из другого умножением на
+некоторое отличное от нуля число, т. е. уравнения эквивалентны. Ясно, что
+если прямые совпадают, то имеет место пропорция (4).</p>
+
+     <p> Плоскость называется <em>ориентированной</em>, если на ней указано некоторое направление
+	  вращения в качестве положительного. <em>Углом </em><img class="inline-f" src="chart/chart_087.png"> <em>между прямой</em>  <img class="inline-f" src="chart/chart_335.png"> и
+	  <em>прямой</em> <img class="inline-f" src="chart/chart_409.png">  на ориентированной плоскости называется тот угол, на который следует
+	  повернуть <img class="inline-f" src="chart/chart_335.png"> до совпадения с <img class="inline-f" src="chart/chart_446.png"> Если поворот совершается в положительном
+	  направлении, то <img class="inline-f" src="chart/chart_352.png"> Если поворот совершается в отрицательном направлении,
+	  то  <img class="inline-f" src="chart/chart_292.png"> Угол между прямыми можно вычислить как угол <img class="inline-f" src="chart/chart_087.png"> между
+	  направляющими векторами</p>
+<img class="outline-f" src="chart/chart_230.png">
+Отсюда <em>условие перпендикулярности прямых</em>:
+<img class="outline-f" src="chart/chart_329.png">
+
+<p>Если уравнения записаны через угловой коэффициент,</p>
+<img class="outline-f" src="chart/chart_425.png">
+<img class="outline-f" src="chart/chart_125.png">
+ то условия взаимного расположения прямых выглядят так:
+
+<ul compact="compact"><p>условие параллельности   <img class="inline-f" src="chart/chart_223.png">
+</p><p>условие совпадения <img class="inline-f" src="chart/chart_260.png">
+</p><p>условие перпендикулярности <img class="inline-f" src="chart/chart_146.png">
+<img class="outline-f" src="chart/chart_497.png">
+</p></ul>
+
+           <p> Если существует общая точка прямых, заданных уравнениями </p>
+<img class="outline-f" src="chart/chart_255.png">
+<img class="outline-f" src="chart/chart_430.png">
+<p>то ее координаты удовлетворяют этим уравнениям и обратно, если координаты
+некоторой точки удовлетворяют уравнениям одновременно, то эта точка есть
+точка пересечения прямых. Следовательно, для нахождения координат общей точки
+надо решить систему, составленную из этих двух уравнений. Если
+</p>
+<img class="outline-f" src="chart/chart_081.png">
+то существует единственное решение системы.
+
+	<p><em>Пучком пересекающихся прямых</em>, определяемым прямыми (1) и (2),
+	называется совокупность всех прямых, проходящих через точку пересечения этих прямых,
+	если они пересекаются. <em>Центром пучка</em> называется точка пересечения прямых.
+	<em>Пучком параллельных прямых</em> называется  совокупность всех прямых, имеющих
+	направления прямых (1) и (2), если они параллельны или совпадают.</p>
+
+    <p> <strong>ТЕОРЕМА</strong>. Уравнение пучка прямых, определяемого различными прямыми (1) и (2), имеет вид
+ <img class="outline-f" src="chart/chart_375.png">
+где <img class="inline-f" src="chart/chart_507.png"> и <img class="inline-f" src="chart/chart_210.png"> принимают всевозможные значения, не равные одновременно нулю.
+</p>
+
+<p>	<strong>Доказательство</strong>. Ясно, что прямая</p>
+ <img class="outline-f" src="chart/chart_375.png">
+<p>проходит через точку пересечения прямых (1) и (2). Пусть прямая </p>
+<img class="outline-f" src="chart/chart_471.png">
+<p>проходит через точку пересечения прямых (1) и (2). Система</p>
+<img class="outline-f" src="chart/chart_023.png">
+<p>имеет единственное решение и <img class="inline-f" src="chart/chart_002.png"> Теорема доказана.</p>
+
+ <p>При решении задач удобнее это уравнение использовать в виде</p>
+<img class="outline-f" src="chart/chart_016.png">
+<p>в котором можно записать уравнение любой прямой, проходящей через точку пересечения
+прямых (1) и (2), кроме второй из взятых прямых.</p>
+
+     <p> Задача. Даны уравнения двух пересекающихся прямых
+<img class="inline-f" src="chart/chart_156.png">
+</p>
+<p>Найдите уравнения прямой, проходящей через данную точку <img class="inline-f" src="chart/chart_170.png">  и точку
+пересечения данных прямых.</p>
+
+      <p class="solution">Прямая пучка проходит через данную точку, если</p>
+<img class="outline-f" src="chart/chart_061.png">
+<p>Подставив полученное значение <img class="inline-f" src="chart/chart_400.png"> в уравнение пучка после преобразований получим </p>
+<p class="key"><img class="inline-f" src="chart/chart_167.png">
+
+</p><h3>Упражнения</h3>
+<ol type="1">
+	<li>
+ Выясните взаимное расположение прямых и в случае пересечения определите
+координаты общей точки</li>
+<ul style="list-style-type: none">
+<li>
+а) <img class="inline-f" src="chart/chart_197.png">  и <img class="inline-f" src="chart/chart_322.png">
+</li><li>
+б) <img class="inline-f" src="chart/chart_509.png">  и <img class="inline-f" src="chart/chart_127.png">
+</li><li>
+в) <img class="inline-f" src="chart/chart_518.png">  и <img class="inline-f" src="chart/chart_429.png">
+</li><li>
+г) <img class="inline-f" src="chart/chart_377.png">  и <img class="inline-f" src="chart/chart_488.png">
+</li><li>
+д) <img class="inline-f" src="chart/chart_198.png">  и <img class="inline-f" src="chart/chart_199.png">
+ </li><li>
+е) <img class="inline-f" src="chart/chart_218.png">  и <img class="inline-f" src="chart/chart_511.png">
+</li><li>
+ж) <img class="inline-f" src="chart/chart_315.png">  и <img class="inline-f" src="chart/chart_510.png">
+</li></ul>
+    <li>
+ При каком значении параметра <img class="inline-f" src="chart/chart_188.png"> прямые параллельны
+  <img class="inline-f" src="chart/chart_351.png">        и <img class="inline-f" src="chart/chart_047.png"></li>
+
+<li> Докажите, что уравнение пучка с центром <img class="inline-f" src="chart/chart_170.png"> можно записать так</li>
+<img class="inline-f" src="chart/chart_051.png">
+  или
+<img class="inline-f" src="chart/chart_099.png">
+
+<li> Докажите, что три прямые</li>
+
+<img class="outline-f" src="chart/chart_383.png">
+принадлежат одному пучку тогда и только тогда, когда
+<img class="outline-f" src="chart/chart_327.png">
+
+<li> Даны уравнения сторон треугольника</li>
+
+<img class="inline-f" src="chart/chart_441.png"> и <img class="inline-f" src="chart/chart_071.png">
+
+     Составьте уравнения:
+<ul style="list-style-type: none">
+<li>
+а) высот треугольника,
+</li><li>
+     б) прямых проходящих через вершины треугольника параллельно противоположным сторонам.
+</li></ul>
+<li>  Через точку пересечения прямых <img class="inline-f" src="chart/chart_070.png"> и <img class="inline-f" src="chart/chart_050.png"> проведите прямую:</li>
+<ul style="list-style-type: none">
+  <li>а) параллельную оси абсцисс;</li>
+
+      <li>б) параллельную оси ординат;</li>
+
+     <li>
+ в) проходящую через начало координат.
+</li></ul>
+
+
+<li>  Определите общую прямую двух пучков</li>
+<img class="outline-f" src="chart/chart_079.png">
+<img class="outline-f" src="chart/chart_116.png">
+</ol>
+</section>
+
+<section>
+<h2>§12.3. Расстояние от точки до прямой</h2>
+
+<p> Уравнение <img class="inline-f" src="chart/chart_173.png"> называется уравнением прямой в <em>нормальной форме</em>, если
+<img class="inline-f" src="chart/chart_227.png"> Общее уравнение прямой приводится к нормальному виду с помощью
+<em>нормирующего множителя </em>
+<img class="outline-f" src="chart/chart_294.png">
+где принято знак выбирать противоположным свободному члену,
+ т. е. <img class="inline-f" src="chart/chart_479.png"></p>
+
+<p> Пусть точка <img class="inline-f" src="chart/chart_018.png"> лежит на расстоянии <img class="inline-f" src="chart/chart_182.png"> от прямой  и
+<img class="inline-f" src="chart/chart_379.png"> - проекция точки на эту прямую, <img class="inline-f" src="chart/chart_273.png">- нормаль к прямой.
+Для нормального уравнения длина вектора нормали равна 1.
+<em>Отклонением точки</em> <img class="inline-f" src="chart/chart_028.png"> <em>от прямой </em>называется число <img class="inline-f" src="chart/chart_346.png">, равное <img class="inline-f" src="chart/chart_182.png">, если векторы
+<img class="inline-f" src="chart/chart_457.png"> и  <img class="inline-f" src="chart/chart_122.png"> сонаправлены и <img class="inline-f" src="chart/chart_453.png">, если  <img class="inline-f" src="chart/chart_457.png"> и <img class="inline-f" src="chart/chart_122.png"> противоположно направлены. Тогда
+<img class="outline-f" src="chart/chart_467.png">
+</p>
+<p>
+ Так как  <img class="inline-f" src="chart/chart_476.png"> то
+<img class="outline-f" src="chart/chart_152.png">
+<img class="outline-f" src="chart/chart_020.png">
+Для общего уравнения расстояние от точки <img class="inline-f" src="chart/chart_465.png"> до плоскости вычисляется по формуле
+<img class="outline-f" src="chart/chart_194.png">
+</p>
+<p>
+Нормальное уравнение часто записывают в виде
+<img class="inline-f" src="chart/chart_130.png">
+Здесь  <img class="inline-f" src="chart/chart_153.png">, <img class="inline-f" src="chart/chart_250.png"> - направляющие косинусы вектора нормали.
+Геометрический смысл параметра <img class="inline-f" src="chart/chart_480.png"> - расстояние от начала координат до плоскости.
+Вектор нормали направлен в сторону полуплоскости, в которой нет начала координат.
+</p>
+<p>
+<em>Геометрический смысл знака трехчлена</em><img class="inline-f" src="chart/chart_217.png">:
+для того, чтобы точка <img class="inline-f" src="chart/chart_018.png"> и вектор <img class="inline-f" src="chart/chart_273.png"> лежали в одной полуплоскости
+относительно прямой <img class="inline-f" src="chart/chart_173.png"> необходимо и достаточно, чтобы выполнялось условие
+<img class="inline-f" src="chart/chart_373.png">
+</p>
+<p>
+Задача. Даны точки <img class="inline-f" src="chart/chart_036.png"> и <img class="inline-f" src="chart/chart_380.png">  и прямая  <img class="inline-f" src="chart/chart_142.png"> Проходит ли прямая
+через внутреннюю точку отрезка <img class="inline-f" src="chart/chart_418.png">
+</p>
+<p>
+</p><p class="solution"> Так как числа
+<img class="outline-f" src="chart/chart_264.png">
+и
+<img class="outline-f" src="chart/chart_309.png">
+имеют разные знаки, то точки принадлежат различным полуплоскостям относительно прямой.
+</p>
+<p>
+</p><p class="key"> прямая пересекает отрезок.
+
+</p><h3>Упражнения</h3>
+<ol>
+<li> Какие стороны треугольника с вершинами <img class="inline-f" src="chart/chart_408.png"> <img class="inline-f" src="chart/chart_024.png"> <img class="inline-f" src="chart/chart_485.png"> пересекаются каждой из осей координат?
+</li>
+<li>
+ Докажите, что четырехугольник с вершинами  <img class="inline-f" src="chart/chart_325.png"> <img class="inline-f" src="chart/chart_098.png"> <img class="inline-f" src="chart/chart_463.png"> <img class="inline-f" src="chart/chart_057.png"> выпуклый.
+</li>
+<li>
+ Докажите, что четырехугольник с вершинами
+<img class="inline-f" src="chart/chart_459.png"> <img class="inline-f" src="chart/chart_437.png"> <img class="inline-f" src="chart/chart_262.png"> <img class="inline-f" src="chart/chart_101.png">  невыпуклый.
+</li>
+<li>
+ Дан четырехугольник <img class="inline-f" src="chart/chart_155.png">
+<img class="inline-f" src="chart/chart_325.png"> <img class="inline-f" src="chart/chart_098.png"> <img class="inline-f" src="chart/chart_094.png"> <img class="inline-f" src="chart/chart_243.png">
+<ul style="list-style-type: none">
+<li>
+а) Докажите, что точки <img class="inline-f" src="chart/chart_207.png">  и <img class="inline-f" src="chart/chart_216.png">  лежат внутри данного четырехугольника.
+</li><li>
+б) Докажите, что точки <img class="inline-f" src="chart/chart_202.png"> и <img class="inline-f" src="chart/chart_358.png">  лежат вне данного четырехугольника.
+</li></ul>
+</li>
+<li>
+ Даны стороны треугольника
+<img class="inline-f" src="chart/chart_307.png"> <img class="inline-f" src="chart/chart_228.png"> <img class="inline-f" src="chart/chart_095.png">
+      Составьте систему неравенств, определяющую внутреннюю область треугольника.
+</li>
+<li>
+ Изобразите на чертеже область, определяемую системой неравенств
+<img class="outline-f" src="chart/chart_252.png">
+</li>
+<li>
+  Найдите длины высот треугольника, стороны которого заданы уравнениями:    <img class="inline-f" src="chart/chart_220.png"> и <img class="inline-f" src="chart/chart_253.png">
+</li>  <li>
+  Напишите уравнение окружности с центром в точке <img class="inline-f" src="chart/chart_334.png"> , касающейся прямой <img class="inline-f" src="chart/chart_124.png">
+</li><li>
+  Выведите формулу для вычисления расстояния между параллельными прямыми  <img class="inline-f" src="chart/chart_009.png"> и <img class="inline-f" src="chart/chart_439.png"> Пользуясь полученной формулой, определите расстояние между прямыми <img class="inline-f" src="chart/chart_378.png"> и <img class="inline-f" src="chart/chart_279.png">
+</li>
+<li>
+ Составьте уравнения прямых, отстоящих от прямой <img class="inline-f" src="chart/chart_359.png"> на расстоянии, равном 3.
+</li><li>
+ Составьте уравнение геометрического места точек, равноудаленных от двух параллельных прямых:
+</li>
+<ul style="list-style-type: none">
+<li>
+      а) <img class="inline-f" src="chart/chart_464.png"></li>
+<li>
+      б) <img class="inline-f" src="chart/chart_492.png"></li></ul>
+<li>
+На прямой <img class="inline-f" src="chart/chart_030.png"> найдите точки, равноудаленные от прямых
+<img class="inline-f" src="chart/chart_092.png">  и <img class="inline-f" src="chart/chart_386.png">
+</li><li>
+ Составьте уравнение биссектрисы того угла между прямыми
+<img class="inline-f" src="chart/chart_285.png"> и <img class="inline-f" src="chart/chart_481.png"> в котором лежит начало координат.
+</li><li>
+  Даны уравнения сторон треугольника: <img class="inline-f" src="chart/chart_215.png"> и <img class="inline-f" src="chart/chart_078.png">  Составьте уравнения вписанной и вневписанных окружностей.
+</li><li>
+  Луч света направлен по прямой <img class="inline-f" src="chart/chart_311.png"> Дойдя до прямой <img class="inline-f" src="chart/chart_196.png"> луч отразился. Составьте уравнение прямой, на которой оказался отраженный луч.
+</li><li>
+  Составьте уравнения сторон треугольника <img class="inline-f" src="chart/chart_368.png"> зная уравнения двух биссектрис <img class="inline-f" src="chart/chart_318.png"> <img class="inline-f" src="chart/chart_141.png"> и координаты вершины <img class="inline-f" src="chart/chart_304.png">
+</li>
+</ol>
+
+</section><section>
+<h2>§ 12.4. Полярные координаты</h2>
+<p>
+	Возьмем на плоскости прямую. Выберем на ней точку <img class="inline-f" src="chart/chart_278.png"> и единичный вектор <img class="inline-f" src="chart/chart_235.png"> а также
+	некоторое положительное направление обхода. Пусть <img class="inline-f" src="chart/chart_028.png"> - произвольная точка плоскости,
+	отличная от <img class="inline-f" src="chart/chart_434.png"> Положение этой точки однозначно определено заданием длины <img class="inline-f" src="chart/chart_027.png">
+	отрезка <img class="inline-f" src="chart/chart_403.png"> и углом <img class="inline-f" src="chart/chart_087.png"> между векторами <img class="inline-f" src="chart/chart_313.png"> и <img class="inline-f" src="chart/chart_491.png"> Числа <img class="inline-f" src="chart/chart_027.png"> и <img class="inline-f" src="chart/chart_087.png">
+	называются <em>полярными координатами точки</em> <img class="inline-f" src="chart/chart_360.png"> При этом <img class="inline-f" src="chart/chart_027.png"> называется
+	<em>полярным радиусом</em>,
+	 а <img class="inline-f" src="chart/chart_087.png"> - <em>полярным углом</em>. Если <img class="inline-f" src="chart/chart_028.png"> имеет полярные координаты <img class="inline-f" src="chart/chart_027.png"> и <img class="inline-f" src="chart/chart_088.png"> то
+	 пишем <img class="inline-f" src="chart/chart_452.png"> Точка <img class="inline-f" src="chart/chart_278.png"> называется <em>полюсом</em>, а луч <img class="inline-f" src="chart/chart_093.png"> -
+	 <em>полярной осью</em>.
+	 Точка <img class="inline-f" src="chart/chart_096.png"> вектор <img class="inline-f" src="chart/chart_313.png"> и положительное направление обхода плоскости образуют
+	 <em>полярную систему координат</em>.
+	</p><p>
+	Заметим, что полярный угол имеет бесконечное много значений. Если <img class="inline-f" src="chart/chart_028.png"> совпадает с <img class="inline-f" src="chart/chart_096.png">
+	то <img class="inline-f" src="chart/chart_332.png"> а значение <img class="inline-f" src="chart/chart_087.png"> считаем неопределенным.
+	</p><p>
+	Пусть <img class="inline-f" src="chart/chart_282.png"> - прямоугольная декартова система, где вектор <img class="inline-f" src="chart/chart_266.png"> получен из вектора <img class="inline-f" src="chart/chart_313.png"> и
+	поворотом на 90<img class="inline-f" src="chart/chart_110.png"> Полярные и прямоугольные декартовы координаты точки <img class="inline-f" src="chart/chart_028.png"> связаны
+	соотношениями
+<img class="outline-f" src="chart/chart_039.png">
+
+ 	Иногда рассматривают <em>обобщенные полярные координаты</em>. В этом случае
+считаем, что полярный радиус может принимать и отрицательные значения.
+Например, точка с полярными координатами (3; 210<img class="inline-f" src="chart/chart_473.png">) имеет обобщенные
+полярные координаты (-3; 30<img class="inline-f" src="chart/chart_473.png">).
+</p>
+
+	Найдем полярное уравнение прямой на плоскости. Пусть прямая задана
+нормальным уравнением <img class="inline-f" src="chart/chart_300.png"> Выразив переменные
+через полярные координаты, получим
+	<img class="outline-f" src="chart/chart_151.png">
+или
+<img class="outline-f" src="chart/chart_420.png">
+Это и есть полярное уравнение прямой на плоскости.
+
+<h3>Упражнения</h3>
+<ol>
+<li>
+В полярной системе координат даны точки <img class="inline-f" src="chart/chart_058.png"> и
+<img class="inline-f" src="chart/chart_337.png"> Вычислите расстояние между ними.
+</li>
+<li>
+ Вычислите площадь треугольника <img class="inline-f" src="chart/chart_107.png"> если <img class="inline-f" src="chart/chart_278.png"> - полюс и известны полярные
+координаты вершин <img class="inline-f" src="chart/chart_139.png">
+</li>
+<li>
+Треугольник задан полярными координатами вершин: <img class="inline-f" src="chart/chart_259.png">
+<img class="inline-f" src="chart/chart_514.png"> <img class="inline-f" src="chart/chart_484.png">  Докажите, что треугольник
+равнобедренный.
+</li>
+<li>
+Треугольник задан полярными координатами вершин: <img class="inline-f" src="chart/chart_501.png">
+<img class="inline-f" src="chart/chart_026.png"> <img class="inline-f" src="chart/chart_084.png"> Докажите, что
+треугольник прямоугольный.
+</li>
+<li>
+Как расположены точки на плоскости, полярные координаты которых
+удовлетворяют одному из условий: а)<img class="inline-f" src="chart/chart_209.png">  б) <img class="inline-f" src="chart/chart_265.png">
+ в)<img class="inline-f" src="chart/chart_288.png">  г) <img class="inline-f" src="chart/chart_308.png">
+д)<img class="inline-f" src="chart/chart_410.png">  е)<img class="inline-f" src="chart/chart_175.png">
+</li></ol>
+</section>
+
+<section>
+<h2>§ 12.5. Окружность</h2>
+
+<p>	<em>Окружностью</em> называется геометрическое место точек плоскости,
+равноудаленных от данной точки. Данная точка называется  <em>центром</em> окружности.
+Расстояние любой точки окружности до центра называется <em>радиусом</em> окружности.
+</p>
+
+<p>	Пусть <img class="inline-f" src="chart/chart_310.png"> - центр окружности, <img class="inline-f" src="chart/chart_043.png"> - ее радиус, а<img class="inline-f" src="chart/chart_301.png">) - текущая точка окружности. Тогда
+<img class="outline-f" src="chart/chart_256.png">
+Возведя обе части равенства в квадрат, получим нормальное  уравнение окружности
+<img class="outline-f" src="chart/chart_405.png">
+Если центр окружности совпадает с началом координат, то имеем
+<em>каноническое уравнение окружности</em>
+<img class="outline-f" src="chart/chart_499.png">
+</p>
+<div id="circle" class="illustration">
+<div class="canvas_host"><canvas width="300" height="300"></canvas></div>
+</div>
+<p>
+Пример. Найдите координаты центра и радиус окружности
+<img class="outline-f" src="chart/chart_157.png">
+</p><p class="solution"> Выделив полные квадраты, преобразуем уравнение к виду
+<img class="outline-f" src="chart/chart_284.png">
+или
+<img class="outline-f" src="chart/chart_404.png"></p>
+<p class="key"> <img class="inline-f" src="chart/chart_462.png"></p>
+
+<h3>Упражнения</h3>
+<ol><li>
+Если точка <img class="inline-f" src="chart/chart_018.png"> лежит вне окружности <img class="inline-f" src="chart/chart_100.png"> то <img class="inline-f" src="chart/chart_111.png"> а если внутри окружности, то
+<img class="inline-f" src="chart/chart_254.png"> Докажите это.
+</li><li>
+ Найдите геометрическое место точек плоскости, отношение расстояний которых от
+двух данных точек <img class="inline-f" src="chart/chart_203.png"> и <img class="inline-f" src="chart/chart_150.png"> этой плоскости постоянно и равно <img class="inline-f" src="chart/chart_397.png">
+</li><li>
+ Найдите геометрическое место точек плоскости, сумма квадратов расстояний
+которых от двух данных точек <img class="inline-f" src="chart/chart_203.png"> и <img class="inline-f" src="chart/chart_150.png"> этой плоскости постоянна.
+</li><li>
+Найдите геометрическое место точек плоскости, сумма квадратов расстояний
+которых от трех данных точек <img class="inline-f" src="chart/chart_280.png"> и <img class="inline-f" src="chart/chart_417.png"> этой плоскости постоянна.
+</li><li>
+Найдите геометрическое место точек, касательные из которых, проведенные к
+данной окружности, имеют постоянную длину.
+</li><li>
+Определите геометрическое место точек плоскости, из которых данный отрезок
+<img class="inline-f" src="chart/chart_040.png"> виден под прямым углом.
+</li><li>
+Дана окружность радиуса <img class="inline-f" src="chart/chart_043.png"> и на ней точка <img class="inline-f" src="chart/chart_203.png">. Найдите геометрическое место
+точек, делящих всевозможные хорды, проведенные через <img class="inline-f" src="chart/chart_017.png"> в одном и том же
+отношении.
+</li><li>
+Найдите геометрическое место середин всех хорд окружности, имеющих данную
+длину.
+</li></ol>
+</section>
+
+<section>
+<h2>§ 12.6. Эллипс</h2>
+
+       <p><em>Эллипсом</em> называется геометрическое место точек плоскости, сумма
+расстояний которых до двух фиксированных точек этой плоскости, постоянна.
+Эти две фиксированные точки <img class="inline-f" src="chart/chart_248.png"> и <img class="inline-f" src="chart/chart_470.png"> называются <em>фокусами</em>. Длина
+отрезка <img class="inline-f" src="chart/chart_390.png"> называется <em>фокусным расстоянием</em>. Постоянную сумму
+расстояний обозначим через <img class="inline-f" src="chart/chart_406.png"> так что для любой точки <img class="inline-f" src="chart/chart_028.png"> эллипса
+имеем <img class="inline-f" src="chart/chart_388.png"> Считаем, что <img class="inline-f" src="chart/chart_112.png">
+          </p>
+ Эллипс можно построить с помощью нити длиной <img class="inline-f" src="chart/chart_406.png"> закрепленной концами в
+фокусах. Зацепив нить острием карандаша и двигая его так, чтобы нить все
+время была в натянутом состоянии, мы острием карандаша вычертим эллипс.
+<p></p>
+
+<p>
+             Для изучения эллипса применим метод координат, который в данном
+случае заключается в выборе системы координат, в которой уравнение эллипса
+имеет наиболее простой вид и наиболее удобный для исследования. За ось абсцисс
+примем прямую, проходящую через фокусы, а серединный перпендикуляр отрезка
+<img class="inline-f" src="chart/chart_067.png"> за ось ординат. Тогда координаты фокусов <img class="inline-f" src="chart/chart_086.png"> и <img class="inline-f" src="chart/chart_451.png">
+Точка <img class="inline-f" src="chart/chart_301.png"> принадлежит эллипсу тогда и только тогда, когда
+<img class="outline-f" src="chart/chart_035.png">
+Получили уравнение эллипса. Преобразуем его.
+<img class="outline-f" src="chart/chart_208.png">
+<img class="outline-f" src="chart/chart_371.png">
+<img class="outline-f" src="chart/chart_270.png">
+<img class="outline-f" src="chart/chart_241.png">
+Так как  <img class="inline-f" src="chart/chart_120.png"> то существует положительное число <img class="inline-f" src="chart/chart_321.png"> для которого
+<img class="inline-f" src="chart/chart_482.png">  Отсюда
+<img class="outline-f" src="chart/chart_185.png">
+Разделив обе части уравнения на <img class="inline-f" src="chart/chart_161.png"> получим <em>каноническое уравнение эллипса</em>
+<img class="outline-f" src="chart/chart_436.png">
+На самом деле уравнение (2) является следствием уравнения эллипса. Но мы покажем, что каждое
+решение уравнения (2) является
+решением уравнения (1). Пусть координаты точки <img class="inline-f" src="chart/chart_301.png"> удовлетворяют уравнению (2). Тогда
+расстояние от этой точки до фокуса <img class="inline-f" src="chart/chart_248.png"> равно
+<img class="outline-f" src="chart/chart_169.png">
+<img class="outline-f" src="chart/chart_119.png">
+<img class="inline-f" src="chart/chart_143.png">
+Аналогично вычисляется расстояние <img class="inline-f" src="chart/chart_236.png"> до фокуса <img class="inline-f" src="chart/chart_012.png"> Оно равно
+<img class="inline-f" src="chart/chart_019.png">
+Так как <img class="inline-f" src="chart/chart_010.png"> то точка <img class="inline-f" src="chart/chart_028.png">
+ лежит на эллипсе. Тем самым доказана эквивалентность уравнений (1) и
+(2) и мы имеем полное право уравнение (2) называть уравнением эллипса.
+Формулы длин фокальных радиусов нам еще окажутся полезными:
+<img class="outline-f" src="chart/chart_301.png">
+<img class="outline-f" src="chart/chart_032.png">
+</p>
+<p>
+       В каноническое уравнение эллипса переменные входят во второй степени.
+Это означает, что оси координат являются осями симметрии эллипса, а начало
+координат - центр симметрии эллипса. Для построения графика эллипса достаточно
+построить его в первой четверти и затем отобразить полученную линию
+относительно осей координат. В первой четверти уравнение эллипса имеет вид
+<img class="outline-f" src="chart/chart_138.png">
+
+При возрастании <img class="inline-f" src="chart/chart_129.png"> от 0 до <img class="inline-f" src="chart/chart_381.png"> значение функции уменьшается от <img class="inline-f" src="chart/chart_214.png"> до 0. График выпуклый
+вверх. Отразив эту линию относительно осей координат, получим график эллипса. Точки
+пересечения эллипса с его осями <img class="inline-f" src="chart/chart_411.png"> <img class="inline-f" src="chart/chart_447.png"> <img class="inline-f" src="chart/chart_164.png"> <img class="inline-f" src="chart/chart_466.png"> называются
+<em>вершинами эллипса</em>, центр симметрии эллипса <img class="inline-f" src="chart/chart_234.png"> - <em>центром  эллипса</em>,
+отрезок <img class="inline-f" src="chart/chart_040.png"> -
+<em>большой осью эллипса</em>, <img class="inline-f" src="chart/chart_174.png"> - <em>малой осью</em>, число <img class="inline-f" src="chart/chart_506.png"> -
+<em>большой полуосью</em>, число <img class="inline-f" src="chart/chart_214.png"> - <em>малой полуосью</em>. Форма эллипса зависит от расстояния между фокусами. Если фокусы сближаются, то
+эллипс становится все более похож на окружность. Когда фокусы сольются с центром эллипса, то
+эллипс обратится в окружность с уравнением
+<img class="inline-f" src="chart/chart_303.png"> Если фокусы отодвигаются от центра, то эллипс постепенно вырождается в отрезок.
+ <em>Основным прямоугольником эллипса</em> называется прямоугольник, ограниченный прямыми, параллельными осям эллипса и отстоящими от них
+соответственно на расстоянии  <img class="inline-f" src="chart/chart_381.png">  и <img class="inline-f" src="chart/chart_276.png"> Эллипс располагается внутри основного прямоугольника.
+</p>
+<p>
+      Рассмотрим окружность <img class="inline-f" src="chart/chart_455.png"> и подвергнем ее преобразованию
+
+<img class="outline-f" src="chart/chart_225.png">
+Получим <img class="inline-f" src="chart/chart_115.png">
+В результате сжатия окружности к ее оси симметрии она преобразуется в эллипс
+<img class="outline-f" src="chart/chart_277.png">
+</p><p>
+      Всякий эллипс может быть получен как результат равномерного сжатия
+некоторой окружности. Степень сжатия эллипса характеризуется
+<em>эксцентриситетом</em> <img class="inline-f" src="chart/chart_147.png"> (отношение фокусного
+расстояния к длине большой оси). Эксцентриситет эллипса всегда меньше
+единицы.  Для эллипса, выродившегося в прямолинейный отрезок, эксцентриситет
+равен 1. Для эллипса, превратившегося в окружность, когда его фокусы совпали,
+эксцентриситет равен нулю.  <em>Директрисой эллипса</em> называется прямая,
+параллельная малой оси и отстоящая от нее на расстоянии <img class="inline-f" src="chart/chart_132.png"> Под это определение попадают две прямые с уравнениями <img class="inline-f" src="chart/chart_317.png">  и <img class="inline-f" src="chart/chart_123.png">
+Фокус и директрису, лежащие в одной полуплоскости, называем
+<em>соответствующими</em>.
+</p><p>
+<strong>ТЕОРЕМА.</strong> Отношение расстояния от любой точки эллипса до
+фокуса к расстоянию от
+этой точки до соответствующей директрисы равно эксцентриситету.
+</p><p>
+
+Доказательство. Воспользуемся формулой длины фокального радиуса: для левого
+фокуса имеем  <img class="inline-f" src="chart/chart_319.png">  Аналогично вычисляем отношение для правого фокуса.
+</p><p>
+<strong>ТЕОРЕМА.</strong> Уравнение касательной к эллипсу
+<img class="inline-f" src="chart/chart_286.png"> в точке
+ <img class="inline-f" src="chart/chart_379.png"> эллипса имеет вид <img class="inline-f" src="chart/chart_272.png">
+</p><p>
+Доказательство. Продифференцировав обе части уравнения эллипса, получим
+<img class="inline-f" src="chart/chart_038.png"> </p>
+
+<p> Отсюда, угловой коэффициент касательной в точке <img class="inline-f" src="chart/chart_106.png">  равен <img class="inline-f" src="chart/chart_118.png"> а уравнение касательной в этой точке можно записать так:
+
+ <img class="inline-f" src="chart/chart_444.png">  </p>
+
+<p>
+Задача. Отрезок постоянной длины скользит своими концами по двум
+перпендикулярным прямым. Найдите линию, описываемую некоторой точкой <img class="inline-f" src="chart/chart_028.png">
+движущегося отрезка.
+
+</p><p class="solution"> Примем данные перпендикулярные прямые в качестве осей
+координат с началом координат в точке <img class="inline-f" src="chart/chart_278.png"> пересечения этих прямых.
+Точка <img class="inline-f" src="chart/chart_203.png"> отрезка скользит по оси <img class="inline-f" src="chart/chart_211.png"> а точка <img class="inline-f" src="chart/chart_150.png"> отрезка скользит по оси <img class="inline-f" src="chart/chart_460.png">
+Пусть точка <img class="inline-f" src="chart/chart_469.png"> делит данный отрезок <img class="inline-f" src="chart/chart_040.png"> на части <img class="inline-f" src="chart/chart_297.png">
+Если <img class="inline-f" src="chart/chart_483.png"> то <img class="inline-f" src="chart/chart_231.png">
+Исключим из этих уравнений параметр <img class="inline-f" src="chart/chart_114.png">
+<img class="outline-f" src="chart/chart_249.png">
+т. е.
+<img class="outline-f" src="chart/chart_277.png">
+
+Таким образом, кривая, описываемая точкой <img class="inline-f" src="chart/chart_181.png"> есть эллипс. Уравнение
+<img class="outline-f" src="chart/chart_291.png">
+называется <em>параметрическим уравнением эллипса</em>.
+</p>
+<div id="ellips" class="illustration">
+<div class="canvas_host"><canvas width="300" height="300"></canvas></div>
+</div>
+<p>
+Задача. Луч света, выходя из одного фокуса, после отражения от эллипса
+попадает в другой его фокус (оптическое свойство эллипса).
+</p>
+<p class="solution"> Сумма расстояний до фокусов эллипса точки касания
+наименьшая среди остальных точек касательной, поскольку все  они лежат
+вне эллипса. Отразим фокус <img class="inline-f" src="chart/chart_470.png"> эллипса относительно касательной к эллипсу в точке <img class="inline-f" src="chart/chart_426.png"> Получим точку <img class="inline-f" src="chart/chart_031.png"> Точка <img class="inline-f" src="chart/chart_487.png"> лежит на отрезке<img class="inline-f" src="chart/chart_204.png"> , так как для любой другой точки <img class="inline-f" src="chart/chart_028.png"> касательной
+<img class="outline-f" src="chart/chart_149.png">
+По закону: угол падения равен углу отражения, луч движется по маршруту
+<img class="inline-f" src="chart/chart_133.png">
+
+</p><h3>Задачи и упражнения</h3>
+<ol><li>
+Докажите, что если точка находится вне эллипса, то сумма расстояний от
+нее до фокусов больше, чем на эллипсе, если внутри, то меньше.
+</li><li>
+Докажите, что произведение расстояний от фокусов до любой касательной к эллипсу равно квадрату малой оси.
+</li><li>
+Докажите, что отрезок касательной к эллипсу в любой точке, заключенный
+между касательными, проведенными в вершинах, лежащих на большой оси,
+виден из фокусов под прямым углом.
+</li><li>
+Докажите оптическое свойство эллипса: всякая касательная  к эллипсу
+образует равные углы с  фокальными радиусами точки прикосновения.
+</li><li>
+Составьте геометрическое место точек, из которых эллипс
+<img class="inline-f" src="chart/chart_450.png">  виден под прямым углом.
+</li><li>
+Через фокус <img class="inline-f" src="chart/chart_248.png"> эллипса <img class="inline-f" src="chart/chart_450.png"> проведена хорда, касательная оси <img class="inline-f" src="chart/chart_168.png"> Определите длину этой хорды.
+</li><li>
+Равномерным сжатием плоскости к прямой <img class="inline-f" src="chart/chart_192.png">  называется преобразование точек плоскости,
+при котором точка <img class="inline-f" src="chart/chart_028.png"> переходит в точку <img class="inline-f" src="chart/chart_011.png"> для которой  <img class="inline-f" src="chart/chart_163.png">
+где <img class="inline-f" src="chart/chart_034.png">  и <img class="inline-f" src="chart/chart_205.png"> - основание перпендикуляра, опущенного из <img class="inline-f" src="chart/chart_028.png"> на прямую <img class="inline-f" src="chart/chart_054.png">
+Пусть прямая <img class="inline-f" src="chart/chart_182.png"> проходит через центр данной окружности. Докажите, что при равномерном
+сжатии к этой прямой окружность преобразуется в эллипс.
+</li>
+</ol>
+</section><section>
+
+<h2>§ 12.7. Гипербола</h2>
+
+<p><em> Гиперболой</em> называется геометрическое место точек плоскости,
+разность
+расстояний которых до двух фиксированных точек этой плоскости, постоянна. Эти
+две фиксированные точки <img class="inline-f" src="chart/chart_248.png"> и <img class="inline-f" src="chart/chart_470.png"> называются <em>фокусами</em>. Длина
+отрезка <img class="inline-f" src="chart/chart_390.png">
+называется <em>фокусным расстоянием</em>. Постоянную разность расстояний (из большего
+расстояния вычитаем меньшее) обозначим через <img class="inline-f" src="chart/chart_356.png">, так что для любой точки <img class="inline-f" src="chart/chart_028.png">
+гиперболы имеем  <img class="inline-f" src="chart/chart_314.png">. Считаем, что <img class="inline-f" src="chart/chart_154.png">. Для изучения гиперболы
+применим метод координат. За ось абсцисс примем прямую, проходящую через фокусы,
+ а серединный перпендикуляр отрезка <img class="inline-f" src="chart/chart_067.png"> за ось ординат. Тогда координаты
+фокусов <img class="inline-f" src="chart/chart_490.png"> и <img class="inline-f" src="chart/chart_232.png">. Точка <img class="inline-f" src="chart/chart_469.png"> принадлежит гиперболе тогда и
+только тогда, когда
+<img class="outline-f" src="chart/chart_089.png">
+Получили уравнение гиперболы. Преобразуем его.
+<img class="outline-f" src="chart/chart_503.png">
+<img class="outline-f" src="chart/chart_109.png">
+<img class="outline-f" src="chart/chart_229.png">
+<img class="outline-f" src="chart/chart_448.png">
+Так как  <img class="inline-f" src="chart/chart_363.png">, то существует положительное число <img class="inline-f" src="chart/chart_214.png">, для которого
+<img class="inline-f" src="chart/chart_134.png"> Отсюда
+<img class="outline-f" src="chart/chart_190.png">
+<em>Каноническое уравнение гиперболы</em>
+<img class="outline-f" src="chart/chart_392.png">
+</p>
+<div id="hyperbola" class="illustration">
+<div class="canvas_host"><canvas width="300" height="300"></canvas></div>
+</div>
+<p>
+Уравнение (2) является следствием уравнения гиперболы. Покажем, что каждое
+решение уравнения (2) является решением уравнения (1). Пусть координаты точки <img class="inline-f" src="chart/chart_090.png">,  удовлетворяют уравнению (2). Тогда расстояние от этой точки до фокуса <img class="inline-f" src="chart/chart_248.png"> равно
+<img class="inline-f" src="chart/chart_445.png">
+</p><p>
+<img class="inline-f" src="chart/chart_432.png">
+</p><p>
+Аналогично вычисляется расстояние <img class="inline-f" src="chart/chart_236.png"> до фокуса <img class="inline-f" src="chart/chart_012.png"> Оно равно
+<img class="inline-f" src="chart/chart_274.png">.
+ Так как <img class="inline-f" src="chart/chart_010.png">
+то точка <img class="inline-f" src="chart/chart_028.png"> лежит на гиперболе. Тема самым доказана эквивалентность уравнений (1) и (2) и
+мы имеем полное право уравнение (2) называть уравнением гиперболы. Формулы длин
+фокальных радиусов нам еще окажутся полезными:
+<img class="outline-f" src="chart/chart_394.png">
+<img class="outline-f" src="chart/chart_396.png">
+</p><p>
+       В каноническое уравнение гиперболы переменные входят во второй степени.
+Это означает, что оси координат являются осями симметрии гиперболы, а начало
+координат - центр симметрии гиперболы. Для построения графика достаточно
+построить его в первой четверти и затем отобразить полученную линию
+относительно осей координат. В первой
+четверти уравнение гиперболы имеет вид
+<img class="outline-f" src="chart/chart_478.png">
+</p>
+<p>
+При возрастании <img class="inline-f" src="chart/chart_129.png"> от <img class="inline-f" src="chart/chart_381.png"> до бесконечности значение функции возрастает от <img class="inline-f" src="chart/chart_214.png">
+ до <img class="inline-f" src="chart/chart_085.png">. График выпуклый вверх. Отразив эту линию относительно осей
+координат, получим график гиперболы. Ось симметрии гиперболы, имеющую с ней
+общие точки называем <em>действительной осью гиперболы</em>. Ось симметрии гиперболы,
+не имеющую с ней общие точки называем <em>мнимой осью гиперболы</em>.
+Точки пересечения
+ гиперболы с действительной осью <img class="inline-f" src="chart/chart_135.png">, <img class="inline-f" src="chart/chart_102.png"> называют
+<em>вершинами гиперболы</em>, центр симметрии гиперболы <img class="inline-f" src="chart/chart_372.png"> -
+<em>центром  гиперболы</em>. Гипербола
+распадается на две ветви: "правую", для точек которой абсцисса <img class="inline-f" src="chart/chart_171.png"> и "левую",
+ для точек которой <img class="inline-f" src="chart/chart_271.png">.</p>
+<p>
+     Отношение фокусного расстояния к  расстоянию между вершинами называется
+<em>эксцентриситетом</em> <img class="inline-f" src="chart/chart_147.png">. Для гиперболы эксцентриситет всегда больше 1.
+<em>Директрисой гиперболы</em> называется прямая, параллельная мнимой оси и
+отстоящая
+от нее на расстоянии <img class="inline-f" src="chart/chart_132.png"> Под это определение попадают две прямые с уравнениями
+<img class="inline-f" src="chart/chart_369.png">  и <img class="inline-f" src="chart/chart_443.png">.
+Называем соответствующими фокус и директрису, лежащие в одной полуплоскости.
+</p><p>
+<strong>ТЕОРЕМА</strong>. Отношение расстояния от любой точки гиперболы до
+фокуса к расстоянию от этой точки до соответствующей директрисы равно
+эксцентриситету.</p>
+<p>
+Доказательство. Воспользуемся формулой длины фокального радиуса: для левого
+фокуса при <img class="inline-f" src="chart/chart_362.png"> имеем
+<img class="outline-f" src="chart/chart_319.png">
+Аналогично вычисляем отношение в остальных случаях.
+</p><p>
+       Продолжим изучение гиперболы в первой четверти. Положительная в первой
+четверти разность между ординатами прямой и гиперболы
+<img class="outline-f" src="chart/chart_472.png">
+cтремится к нулю при бесконечном возрастании <img class="inline-f" src="chart/chart_129.png">. Прямая
+<img class="outline-f" src="chart/chart_414.png">
+является <em>асимптотой</em> гиперболы. При бесконечном возрастании <img class="inline-f" src="chart/chart_129.png"> гипербола
+приближается к прямой, но не пересекает. В силу симметрии такая же картина
+наблюдается в третьей четверти, а во второй и четвертой четвертях асимптотой
+является прямая
+<img class="outline-f" src="chart/chart_103.png">
+Точка <img class="inline-f" src="chart/chart_097.png"> лежит на асимптоте, т. е. геометрический смысл параметра <img class="inline-f" src="chart/chart_214.png"> -
+ордината асимптоты, восставленная из вершины гиперболы. Так как
+<img class="outline-f" src="chart/chart_108.png">
+то для нахождения фокуса гиперболы можно отложить на оси <img class="inline-f" src="chart/chart_184.png"> отрезок
+<img class="inline-f" src="chart/chart_454.png">.
+</p><p>
+     <em>Основным прямоугольником гиперболы</em> называется прямоугольник, ограниченный
+прямыми, параллельными осям гиперболы и отстоящими от них соответственно на
+расстоянии <img class="inline-f" src="chart/chart_381.png"> и <img class="inline-f" src="chart/chart_214.png">. Диагонали основного прямоугольника гиперболы и есть
+асимптоты.
+</p><p>
+</p><h3>Упражнения</h3>
+<ol><li>
+ Докажите, что уравнение касательной к гиперболе
+<img class="inline-f" src="chart/chart_128.png">   в точке <img class="inline-f" src="chart/chart_379.png">
+гиперболы имеет вид   <img class="inline-f" src="chart/chart_407.png">
+</li><li>
+Точка <img class="inline-f" src="chart/chart_028.png"> называется <em>внутренней точкой гиперболы</em>, если любая секущая,
+проходящая через эту точку и не параллельная асимптотам, пересекает гиперболу
+в двух различных точках. <em>Внешней точкой гиперболы</em> называется точка,
+не лежащая на гиперболе и не являющаяся внутренней. Докажите, что точка <img class="inline-f" src="chart/chart_469.png">
+внутренняя точка гиперболы <img class="inline-f" src="chart/chart_128.png">  в том и
+только том случае, если
+<img class="inline-f" src="chart/chart_494.png">
+</li><li>
+Найдите необходимое и достаточное условие касания прямой <img class="inline-f" src="chart/chart_159.png">  с
+гиперболой <img class="inline-f" src="chart/chart_128.png">, если данная прямая не
+параллельна асимптотам гиперболы.
+</li><li>
+Найдите необходимое и достаточное условие касания прямой <img class="inline-f" src="chart/chart_244.png"> с
+гиперболой <img class="inline-f" src="chart/chart_128.png">, если данная прямая не
+параллельна асимптотам гиперболы.
+</li><li>
+Докажите, что касательные в вершинах гиперболы, параллельны ее мнимой оси.
+</li><li>
+Если угловой коэффициент прямой удовлетворяет неравенствам
+<img class="inline-f" src="chart/chart_331.png">, то прямая не может касаться
+гиперболы  <img class="outline-f" src="chart/chart_392.png">
+Докажите это.
+</li><li>
+Найдите геометрическое место точек плоскости, из которых гипербола видна под прямым углом.
+</li><li>
+Докажите, что произведение расстояний от фокусов до любой касательной к гиперболе есть величина постоянная.
+</li><li>
+Докажите, что отрезок асимптоты, заключенный между центром гиперболы и директрисой, равен действительной полуоси.
+</li><li>
+Докажите, что директрисы гиперболы проходят через основания
+перпендикуляров, опущенных из соответствующих фокусов на асимптоты.
+Выразите расстояние от фокусов до асимптот через полуоси гиперболы.
+</li><li>
+Докажите, что отрезок касательной к гиперболе, заключенный между асимптотами, делится в точке соприкосновения пополам.
+</li><li>
+Докажите оптическое свойство гиперболы: всякая касательная к гиперболе
+составляет равные углы с фокальными радиусами точки касания.
+</li></ol>
+</section><section>
+
+<h2>§ 12.8. Парабола</h2>
+<p>
+ <em> Параболой</em> называется геометрическое место точек плоскости,
+равноудаленных от данной точки и данной прямой этой плоскости. Данная точка
+<img class="inline-f" src="chart/chart_025.png"> называется <em>фокусом</em>, а данная прямая называется <em>директрисой</em>.
+Расстояние <img class="inline-f" src="chart/chart_480.png"> между фокусом и директрисой называется <em>фокальным параметром</em>
+  или <em> параметром параболы</em>.
+</p><p>
+       Для изучения параболы применим метод координат. За ось абсцисс примем
+прямую, проходящую через фокус перпендикулярно директрисе; за ось ординат -
+прямую, параллельную директрисе и проходящую на равном расстоянии от фокуса и
+директрисы. Координаты фокуса <img class="inline-f" src="chart/chart_458.png">. Точка <img class="inline-f" src="chart/chart_301.png"> принадлежит
+параболе тогда и только тогда, когда
+<img class="outline-f" src="chart/chart_283.png">
+Это - уравнение параболы. Преобразуем его.
+<img class="outline-f" src="chart/chart_158.png">
+Получили  <em>каноническое уравнение параболы</em>
+<img class="outline-f" src="chart/chart_367.png">
+Каждому положительному значению х отвечают два значения<img class="inline-f" src="chart/chart_242.png"> а <img class="inline-f" src="chart/chart_129.png"> может
+принимать только положительные значения и нуль. График симметричен
+относительно оси <img class="inline-f" src="chart/chart_184.png">. Точка пересечения параболы с ее осью называется
+вершиной параболы.
+</p>
+
+<div id="parabola" class="illustration">
+<div class="canvas_host"><canvas width="300" height="300"></canvas></div>
+</div>
+
+<h3>Упражнения</h3>
+<ol><li>
+Докажите, что уравнение касательной к параболе <img class="inline-f" src="chart/chart_113.png"> в точке
+<img class="inline-f" src="chart/chart_379.png"> параболы имеет вид  <img class="inline-f" src="chart/chart_299.png">
+</li><li>
+Найдите геометрическое место середин хорд параболы <img class="inline-f" src="chart/chart_113.png">, имеющих угловой
+коэффициент <img class="inline-f" src="chart/chart_137.png">.
+</li><li>
+Прямая <img class="inline-f" src="chart/chart_159.png">, не параллельная оси <img class="inline-f" src="chart/chart_184.png">  касается параболы
+<img class="inline-f" src="chart/chart_113.png"> тогда и только тогда, когда <img class="inline-f" src="chart/chart_014.png">. Докажите это.
+</li><li>
+Прямая <img class="inline-f" src="chart/chart_244.png">, не параллельная оси <img class="inline-f" src="chart/chart_184.png">,  касается параболы
+<img class="inline-f" src="chart/chart_113.png"> тогда и только тогда, когда <img class="inline-f" src="chart/chart_312.png">. Докажите это.
+</li><li>
+Точка <img class="inline-f" src="chart/chart_028.png"> называется <em>внутренней точкой параболы</em>, если любая прямая,
+проходящая через эту точку и не параллельная оси параболы, пересекает параболу
+в двух различных точках. <em>Внешней точкой парабол</em>ы называется точка, не
+лежащая на параболе и не являющаяся внутренней. Докажите, что точка <img class="inline-f" src="chart/chart_469.png">
+внутренняя точка параболы <img class="inline-f" src="chart/chart_113.png"> в том и только том случае, если
+<img class="inline-f" src="chart/chart_080.png">
+</li><li>
+Найдите геометрическое место оснований перпендикуляров, опущенных из фокуса
+параболы на ее касательные.
+</li><li>
+Найдите геометрическое место точек плоскости, из которых парабола
+<img class="inline-f" src="chart/chart_113.png"> видна под прямым углом.
+</li><li>
+Если из любой точки директрисы проведены к параболе две касательные, то прямая,
+ соединяющая точки касания, проходит через фокус параболы. Докажите это.
+</li><li>
+Докажите оптическое свойство параболы: всякая касательная к параболе
+составляет равные углы с фокальным радиусом точки и лучом, проходящим через
+точку касания и сонаправленным с осью.
+</li><li>
+Докажите, что произведение длин перпендикуляров, опущенных из концов любой
+фокальной хорды на  ось параболы имеет постоянную величину.
+</li></ol>
+
+</section><section>
+<h2>§ 12.9. Полярное уравнение линии второго порядка</h2>
+<p>
+       Найдем уравнение эллипса, гиперболы и параболы в полярных координатах.
+Начало полярной системы координат поместим в фокус (левый в случае эллипса,
+правый в случае гиперболы). Полярная ось направлена по фокальной оси в сторону,
+ противоположную от соответствующей директрисы. Для произвольной точки <img class="inline-f" src="chart/chart_028.png">
+кривой обозначим через <img class="inline-f" src="chart/chart_043.png"> расстояние от точки <img class="inline-f" src="chart/chart_028.png"> до фокуса <img class="inline-f" src="chart/chart_025.png">, а через  <img class="inline-f" src="chart/chart_182.png"> -
+расстояние от <img class="inline-f" src="chart/chart_028.png"> до директрисы. Наша кривая есть геометрическое место точек,
+для которых <img class="inline-f" src="chart/chart_226.png"> где <img class="inline-f" src="chart/chart_037.png"> - эксцентриситет
+эллипса или гиперболы и <img class="inline-f" src="chart/chart_257.png"> в случае параболы. Пусть <img class="inline-f" src="chart/chart_487.png"> - точка
+пересечения прямой, проведенной через <img class="inline-f" src="chart/chart_025.png">, перпендикулярно полярной оси и
+<img class="inline-f" src="chart/chart_212.png"> Обозначая через <img class="inline-f" src="chart/chart_502.png">  точку  пересечения директрисы с фокальной осью, а
+через <img class="inline-f" src="chart/chart_106.png">  - проекцию точки <img class="inline-f" src="chart/chart_028.png"> на эту ось, получим, что <img class="inline-f" src="chart/chart_136.png"> или
+<img class="outline-f" src="chart/chart_177.png">
+где <img class="inline-f" src="chart/chart_087.png"> - угол наклона вектора <img class="inline-f" src="chart/chart_144.png"> к полярной оси.
+<img class="outline-f" src="chart/chart_496.png">
+<img class="outline-f" src="chart/chart_148.png">
+<img class="outline-f" src="chart/chart_421.png">
+Это и есть уравнение эллипса, правой ветви гиперболы и параболы в
+полярных координатах. Этими уравнениями постоянно пользуются в
+астрономии и в механике.
+</p>
+
+</section><section>
+<h2>§ 12.10. Общая теория линий второго порядка</h2>
+<p>
+      Линией второго порядка называется линия, которая в некоторой декартовой
+системе координат определяется уравнением второй степени. Запишем уравнение
+второго порядка в самом общем виде
+<img class="outline-f" src="chart/chart_505.png">
+При условии, что <img class="inline-f" src="chart/chart_083.png"> вычислим
+<img class="inline-f" src="chart/chart_364.png">
+</p><p>
+<img class="inline-f" src="chart/chart_500.png">
+<img class="inline-f" src="chart/chart_393.png">
+</p><p>
+ПРИМЕР. Для эллипса <img class="inline-f" src="chart/chart_450.png">  имеем
+<img class="inline-f" src="chart/chart_251.png">
+</p><p>
+<img class="inline-f" src="chart/chart_433.png">.
+    Тогда
+<img class="inline-f" src="chart/chart_336.png">
+</p><p>
+<img class="inline-f" src="chart/chart_416.png">
+<img class="inline-f" src="chart/chart_105.png"></p>
+<p>
+Можно доказать, что эти числа являются инвариантами относительно
+преобразования параллельного переноса, т. е.  при преобразовании поворота осей
+координат
+<img class="outline-f" src="chart/chart_422.png">
+величины, составленные из соответствующих коэффициентов преобразованного
+уравнения, сохранятся. Можно доказать также, что при параллельном переносе
+осей координат
+<img class="outline-f" src="chart/chart_160.png">
+не изменяются величины  <img class="inline-f" src="chart/chart_263.png"> и <img class="inline-f" src="chart/chart_296.png">.  Таким образом,
+можно определить название линии второго порядка.</p>
+<p>
+С помощью параллельного переноса системы координат можно освободиться от
+ слагаемых первой степени, а с помощью поворота осей можно освободиться
+от слагаемого, содержащего произведение переменных. После подбора
+подходящей системы координат уравнение второй степени примет наиболее
+простой вид. Коэффициенты приведенных уравнений определяются при помощи
+инвариантов.
+</p>
+
+
+<h3>Упражнения</h3>
+<ol><li>
+<em>Центром линии</em> называется точка плоскости, по отношению к которой
+точки линии симметричны парами. Линии второго порядка, обладающие центром,
+называются <em>центральными</em>. Докажите, что точка <img class="inline-f" src="chart/chart_246.png">
+является центром линии (1) тогда и только тогда, когда
+<img class="outline-f" src="chart/chart_475.png">
+</li><li>
+Определитель второго порядка <img class="inline-f" src="chart/chart_298.png">
+, составленный из коэффициентов при старших слагаемых уравнения (1),
+называется <em>дискриминантом уравнения</em> (1). Докажите, что линия второго порядка
+центральная тогда и только тогда, когда <img class="inline-f" src="chart/chart_343.png">. Докажите, что координаты центра
+находятся по формулам
+<img class="outline-f" src="chart/chart_449.png">
+</li><li>
+Определитель  <img class="inline-f" src="chart/chart_072.png">
+ называется дискриминантом левой части уравнения (1); здесь
+<img class="inline-f" src="chart/chart_338.png">  и <img class="inline-f" src="chart/chart_075.png"> для <img class="inline-f" src="chart/chart_042.png">ю
+ При переносе начала координат в центр линии (1) с помощью преобразования
+<img class="inline-f" src="chart/chart_320.png"> уравнение (1) приобрело вид
+<img class="outline-f" src="chart/chart_345.png">
+    Докажите, что <img class="inline-f" src="chart/chart_350.png">
+</li><li>
+Установите, что следующие линии являются центральными, и найдите координаты центра каждой линии:
+<ul style="list-style-type: none">
+<li>а)<img class="inline-f" src="chart/chart_178.png"></li>
+<li>б)<img class="inline-f" src="chart/chart_056.png"></li>
+<li>в)<img class="inline-f" src="chart/chart_187.png"></li>
+<li>г)<img class="inline-f" src="chart/chart_247.png"></li><li></li></ul>
+</li><li>
+ Уравнение (2) подвергнем преобразованию поворота осей на угол <img class="inline-f" src="chart/chart_400.png">
+<img class="outline-f" src="chart/chart_069.png">
+при условии, что <img class="inline-f" src="chart/chart_330.png">
+ Докажите, что в новых координатах уравнение линии примет вид
+<img class="inline-f" src="chart/chart_180.png">
+где
+<img class="inline-f" src="chart/chart_233.png"> и <img class="inline-f" src="chart/chart_365.png">
+</li><li>
+Уравнение второй степени называется эллиптическим, если <img class="inline-f" src="chart/chart_477.png">,
+ гиперболическим, если <img class="inline-f" src="chart/chart_261.png"> и параболическим, если <img class="inline-f" src="chart/chart_172.png">.
+  Докажите, что уравнение центральной линии может быть только эллиптическим или гиперболическим.
+</li><li>
+Докажите, что каждое эллиптическое уравнение является уравнением эллипса, либо вырожденного эллипса, либо мнимого эллипса.
+</li><li>
+Докажите, что каждое гиперболическое уравнение определяет уравнение гиперболы либо вырожденной гиперболы.
+</li><li>
+Докажите, что если <img class="inline-f" src="chart/chart_172.png">, то линия либо не имеет центра, либо имеет бесконечно много центров.
+</li><li>
+Уравнение (1) подвергнем преобразованию поворота осей на угол
+
+<img class="outline-f" src="chart/chart_428.png">
+при условии, что <img class="inline-f" src="chart/chart_172.png">  и
+<img class="inline-f" src="chart/chart_082.png">.
+ Докажите, что в новых координатах уравнение линии примет вид
+<img class="outline-f" src="chart/chart_045.png">
+где <img class="inline-f" src="chart/chart_456.png">, либо вид
+<img class="outline-f" src="chart/chart_287.png">
+где <img class="inline-f" src="chart/chart_240.png">
+</li></ol>
+
+</section></div>
+
+
+
+</body></html>
