@@ -247,12 +247,12 @@ public:
   LongInt operator* (const LongInt& b);  // умножение длинного на длинное
 
   // сравнение длинных чисел
-  bool operator==(const LongInt& b);
-  bool operator!=(const LongInt& b);
-  bool operator<(const LongInt& b);
-  bool operator<=(const LongInt& b);
-  bool operator>(const LongInt& b);
-  bool operator>=(const LongInt& b);
+  bool operator== (const LongInt& b);
+  bool operator!= (const LongInt& b);
+  bool operator< (const LongInt& b);
+  bool operator<= (const LongInt& b);
+  bool operator> (const LongInt& b);
+  bool operator>= (const LongInt& b);
 
   int get_radix (); // основание системы счисления
 };
