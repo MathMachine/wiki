@@ -206,8 +206,10 @@ x : {\tt LongInt}\langle q \rangle = \{$$<br/>
 
 Абстрактное *длинное число по модулю $m$* -- это представление числа $a \in \mathbb N$ в системе счисления по основанию $m$:
 $\overline{a} = (a_0, a_1, a_2, \dots, a_k)$, где
+
 $$
 a = a_0 + a_1 m + a_2 m^2 + a_3 m^3 + \dots + a_k m^k,
+
 $$
 где $0 \leq a_i < m$, при этом $a_k > 0$.
 Для числа $a = 0$ делаем исключение: оно представляется в виде $\overline{a} = (a_0)$, где $a_0 = 0$, $k = 0$.
@@ -268,14 +270,18 @@ LongInt div_mod (const LongInt& a, const LongInt& b, LongInt& a_mod_b);
 
 Предположим, что нам задано два представления целых неотрицательных чисел $a, b$ в системе счисления по основанию $m$:
 $\overline{a} = (a_0, a_1, a_2, \dots, a_k)$, где
+
 $$
 a = a_0 + a_1 m + a_2 m^2 + a_3 m^3 + \dots + a_k m^k,
 $$
+
 где $0 \leq a_i < m$, при этом $a_k > 0$, за исключением случая $a = 0$, и аналогично
 $\overline{b} = (b_0, b_1, b_2, \dots, b_l)$, где
+
 $$
 b = b_0 + b_1 m + b_2 m^2 + b_3 m^3 + \dots + b_l m^l,
 $$
+
 где $0 \leq b_i < m$, при этом $b_l > 0$, за исключением случая $b = 0$.
 
 Требуется вычислить представление числа $c = f(a, b)$ в той же системе счисления.
@@ -296,12 +302,15 @@ $c = \displaystyle\sum_{i=0}^s c_i m^i$, где $0 \leq c_i < m$.
 $d_1 = [(a_0 + b_0)/m]$, $c_0 = (a_0 + b_0) \bmod m$.
 
 Таким образом,
+
 $$
 c = c_0 + (a_1 + b_1 + d_1)m + \sum_{i=2}^p (a_i + b_i)m^i =.
 $$
+
 $$
 = c_0 + m\left[ (a_1 + b_1 + d_1) + \sum_{i=1}^p (a_{i+1} + b_{i+1})m^i \right],
 $$
+
 и задача свелась к нахождению цифр числа $(a_1 + b_1 + d_1) + \displaystyle\sum_{i=1}^p (a_{i+1} + b_{i+1})m^i$.
 
 Теперь у нас вырисовывается математическая индукция, которая в программе может
@@ -309,19 +318,25 @@ $$
 при алгоритмизации.
 
 Разделив $(a_1 + b_1 + d_1)$ на $m$, получим
+
 $$
 c = c_0 + c_1m + (a_2 + b_2 + d_2)m^2 + \sum_{i=3}^p (a_i + b_i)m^i,
 $$
+
 где $a_1 + b_1 + d_1 = c_1 + d_2m$, то есть $c_1 = (a_1 + b_1 + d_1) \bmod m$, $d_2 = [(a_1 + b_1 + d_1)/m]$.
 Далее, аналогично,
+
 $$
 c = c_0 + c_1m + c_2m + (a_3 + b_3 + d_3)m^3 + \sum_{i=4}^p (a_i + b_i)m^i,
 $$
+
 где $a_2 + b_2 + d_2 = c_2 + d_3m$,
 и вообще
+
 $$
 c = \sum_{i=0}^j c_im^i + (a_{j+1} + b_{j+1} + d_{j+1})m^{j+1} + \sum_{i=j+2}^p (a_i + b_i)m^i, \quad j = 0..p-2,
 $$
+
 где $a_j + b_j + d_j = c_j + d_{j+1}m$, то есть $c_j = (a_j + b_j + d_j) \bmod m$, $d_{j+1} = [(a_j + b_j + d_j)/m]$.
 
 Здесь мы считаем
@@ -334,18 +349,23 @@ a_i = 0 \text{ при } i > k,\quad b_i = 0 \text{ при } i > l.
 $$
 c = a + b = \sum_{i=0}^p (a_i + b_i) m^i =
 $$
+
 $$
 = c_0 + (a_1 + b_1 + d_1)m + \sum_{i=2}^p (a_i + b_i) m^i =
 $$
+
 $$
 = c_0 + c_1m + (a_2 + b_2 + d_2)m^2 + \sum_{i=3}^p (a_i + b_i) m^i =
 $$
+
 $$
 = c_0 + c_1m + c_2m^2 + (a_3 + b_3 + d_3)m^3 + \sum_{i=3}^p (a_i + b_i) m^i = \ldots =
 $$
+
 $$
 = \sum_{i=0}^{p-1} c_im^i + (a_p + b_p + d_p)m^p = \sum_{i=0}^{p} c_im^i + d_{p+1}m^{p+1}.
 $$
+
 Поскольку $a < m^{p+1}$ и $b < m^{p+1}$, то $a + b < 2m^{p+1}$, поэтому $d_{p+1} < 2$.
 Этим объясняется то, что старшая цифра суммы в случае возникновения переноса в $(p+1)$-й разряд
 не превосходит 1.
@@ -356,20 +376,20 @@ $$
 
 Алгоритм длинного сложения:
 
-&nbsp;&nbsp;&nbsp; ${\tt sum}(a, b : {\tt LongInt\langle m \rangle}) \to
-c : {\tt LongInt}\langle m \rangle = \{$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $k = {\tt length}(a);\; l = {\tt length}(b)$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $d \leftarrow 0;\; i \leftarrow 0$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${\bf while}\;\; i \leq k\; \vee\; i \leq l\; \vee\; d > 0$ $\{$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $d = d_i$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $c_i \leftarrow (a_i + b_i + d) \bmod m$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $d \leftarrow [(a_i + b_i + d) / m]$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $d = d_{i+1}$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $i \leftarrow i + 1$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $\}$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$s \leftarrow i - 1$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// $c = c_0 + c_1 m + c_2 m^2 + \ldots + c_s m^s$<br/>
-&nbsp;&nbsp;&nbsp; $\}$
+&nbsp;&nbsp;&nbsp; $${\tt sum}(a, b : {\tt LongInt\langle m \rangle}) \to
+c : {\tt LongInt}\langle m \rangle = \{$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$k = {\tt length}(a);\; l = {\tt length}(b)$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$d \leftarrow 0;\; i \leftarrow 0$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $${\bf while}\;\; i \leq k\; \vee\; i \leq l\; \vee\; d > 0\;\{$$ <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $$d = d_i$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$c_i \leftarrow (a_i + b_i + d) \bmod m$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$d \leftarrow [(a_i + b_i + d) / m]$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $$d = d_{i+1}$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$i \leftarrow i + 1$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$\}$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$s \leftarrow i - 1$$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// $$c = c_0 + c_1 m + c_2 m^2 + \ldots + c_s m^s$$<br/>
+&nbsp;&nbsp;&nbsp; $$\}$$
 
 
 ### Литература
