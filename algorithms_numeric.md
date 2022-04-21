@@ -10,13 +10,16 @@ $\exists\, u, v \in \mathbb Z \colon d = au + bv$.*
 
 
 *Доказательство.* Построим последовательности $\{q_i\}$, $\{r_i\}$,
-$i = 1, 2, \dots$ по формулам: $$\begin{gathered}
+$i = 1, 2, \dots$ по формулам: \begin{equation}
     \label{r1}
     r_0 = a, \quad r_1 = b,
-    \\
+    \end{equation}
+    \begin{equation}
     \label{r2}
     r_{i-1} = r_iq_{i+1} + r_{i+1}, \quad i = 1, 2, \dots
-    \end{gathered}$$ То есть делим $r_{i-1}$ на $r_i$, пока
+    \end{equation}
+
+ То есть делим $r_{i-1}$ на $r_i$, пока
 $r_i \neq 0$. Неполное частное от деления равно $q_{i+1}$, остаток от
 деления равен $r_{i+1}$.
 
@@ -24,22 +27,22 @@ $r_i \neq 0$. Неполное частное от деления равно $q_
 
 ${\rm gcd}(a, b) = \{$
 
-$r_0 \leftarrow a; \;\; r_1 \leftarrow b; \;\; i \leftarrow 1$
+$\qquad$ $r_0 \leftarrow a; \;\; r_1 \leftarrow b; \;\; i \leftarrow 1$
 
-${\bf while}\;\; r_i \neq 0 \;\; \{$
+$\qquad$ ${\bf while}\;\; r_i \neq 0 \;\; \{$
 
-$r_{i+1} \leftarrow r_{i-1} \bmod r_i$
+$\qquad\qquad$ $r_{i+1} \leftarrow r_{i-1} \bmod r_i$
 
-$i \leftarrow i + 1$
+$\qquad\qquad$ $i \leftarrow i + 1$
 
-$\}$
+$\qquad$ $\}$
 
-${\bf return}\;\, r_{i-1}$
+$\qquad$ ${\bf return}\;\, r_{i-1}$
 
 $\}$
 
 Далее мы докажем, что функция $\rm gcd$ возвращает
-$\text{\rm НОД}(a,b)$. Алгоритм можно записать в другом виде:
+$\text{НОД}(a,b)$. Алгоритм можно записать в другом виде:
 
 ${\rm gcd}(a, b) \;\langle\; a, b \in \mathbb Z, \; b \neq 0 \;\rangle = \{$
 
@@ -67,19 +70,28 @@ ${\bf return}\;\, p$
 
 $\}$
 
-Справедливы равенства [Фаддеев, с. 10]: $$\begin{gathered}
+Справедливы равенства [Фаддеев, с. 10]: 
+
+\begin{gather}
 a = bq_1 + r_1,\\
 b = r_1q_2 + r_2,\\
 r_1 = r_2q_3 + r_3,\\
 \dots\\
 r_{k-2} = r_{k-1}q_k + r_k,\\
-r_{k-1} = r_kq_{k+1}.\end{gathered}$$ При этом, по определению остатка
-от деления, $$\begin{gathered}
+r_{k-1} = r_kq_{k+1}.
+\end{gather}
+
+При этом, по определению остатка
+от деления, 
+\begin{gather}
 0 < r_1 \leq |b| - 1,\\
 0 < r_2 \leq r_1 - 1,\\
 0 < r_3 \leq r_2 - 1,\\
 \dots\\
-0 < r_k \leq r_{k-1} - 1.\end{gathered}$$ Поэтому
+0 < r_k \leq r_{k-1} - 1.
+\end{gather}
+
+Поэтому
 $|b| > r_1 > r_2 > r_3 > \dots > r_k > r_{k+1} = 0$. Следовательно,
 алгоритм Евклида конечен.
 
@@ -93,7 +105,7 @@ $d'$ -- какой-нибудь общий делитель чисел $a$ и $b
 равенства вытекает, что $r_1$ делится на $d'$ как разность двух чисел,
 делящихся на $d'$, из второго -- что $r_2$ делится на $d'$ по той же
 причине, и т.д., $r_k$ делится на $d'$. Следовательно, $r_k \geq d'$.
-Так что $r_k = d \equiv \text{\rm НОД}(a,b)$.
+Так что $r_k = d \equiv \text{НОД}(a,b)$.
 
 Далее построим линейное представление НОД: $d = au + bv$. Для этого
 последовательно найдем линейные представления остатков $r_i$,
@@ -116,24 +128,24 @@ $u := u_k$, $v := v_k$. ◻
 
 ${\rm gcd\_ext}(a, b) \rightarrow [d, u, v] = \{$
 
-$r_0 \leftarrow a; \;\; r_1 \leftarrow b; \;\; i \leftarrow 1$
+$\quad$ $r_0 \leftarrow a; \;\; r_1 \leftarrow b; \;\; i \leftarrow 1$
 
-$u_0 \leftarrow 1; \;\; v_0 \leftarrow 0; \;\; u_1 \leftarrow 0; \;\; v_1 \leftarrow 1$
+$\quad$ $u_0 \leftarrow 1; \;\; v_0 \leftarrow 0; \;\; u_1 \leftarrow 0; \;\; v_1 \leftarrow 1$
 
-${\bf while}\;\; r_i \neq 0 \;\; \{$
+$\quad$  ${\bf while}\;\; r_i \neq 0 \;\; \{$
 
-$r_{i+1} \leftarrow r_{i-1} \bmod r_i$
+$\quad\quad$  $r_{i+1} \leftarrow r_{i-1} \bmod r_i$
 
-$q_{i+1} \leftarrow [r_{i-1} / r_i]$
+$\quad\quad$ $q_{i+1} \leftarrow [r_{i-1} / r_i]$
 
-$u_{i+1} \leftarrow u_{i-1} - q_{i+1}u_i; \;\;
-v_{i+1} \leftarrow v_{i-1} - q_{i+1}v_i$
+$\quad\quad$ $u_{i+1} \leftarrow u_{i-1} - q_{i+1}u_i; \;\;
+$\quad\quad$ v_{i+1} \leftarrow v_{i-1} - q_{i+1}v_i$
 
-$i \leftarrow i + 1$
+$\quad\quad$ $i \leftarrow i + 1$
 
-$\}$
+$\quad$ $\}$
 
-$d \leftarrow r_{i-1};\;\; u \leftarrow u_{i-1}; \;\; v \leftarrow v_{i-1}$
+$\quad$ $d \leftarrow r_{i-1};\;\; u \leftarrow u_{i-1}; \;\; v \leftarrow v_{i-1}$
 
 $\}$
 
