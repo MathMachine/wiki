@@ -373,6 +373,103 @@ c : {\tt LongInt}\langle m \rangle = \{$$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// $$c = c_0 + c_1 m + c_2 m^2 + \ldots + c_s m^s$$<br/>
 &nbsp;&nbsp;&nbsp; $$\}$$
 
+#### Длинное вычитание
+
+Допустим, что $a \geq b$, то есть $k \geq l$ и $a_k \geq b_k$.
+
+Вычтем из представления $a = \displaystyle\sum_{i=0}^k a_i m^i$ представление
+$b = \displaystyle\sum_{i=0}^l b_i m^i$:
+
+$$
+a - b = \sum_{i=0}^k (a_i - b_i)m^i,
+$$
+и если $a_i < b_i$, заменим соответствующее слагаемое на $(m + a_i - b_i) - m$.
+
+Обозначим $d_0 = 0$, 
+
+$c_i = a_i - b_i - d_i$, $d_{i+1} = 0$, если $a_i - b_i - d_i \geq 0$
+
+и $c_i = m - (a_i - b_i - d_i)$, $d_{i+1} = 1$, если $a_i - b_i - d_i < 0$.
+
+$$
+a - b = a_0 - b_0 + \sum_{i=1}^k (a_i - b_i)m^i =
+  c_0 + (a_1 - b_1 - d_1)m + \sum_{i=2}^k (a_i - b_i)m^i =
+$$
+$$
+= c_0 + c_1m + (a_2 - b_2 - d_2)m^2 + \sum_{i=3}^k (a_i - b_i)m^i = \ldots =
+$$
+$$
+= \sum_{i=0}^{k-1} c_im^i + (a_k - b_k - d_k)m^k = \sum_{i=0}^k c_im^i.
+$$
+
+Алгоритм длинного вычитания:
+
+&nbsp;&nbsp;&nbsp; ${\tt sub}(a, b : {\tt LongInt\langle m \rangle}) \to
+c : {\tt LongInt}\langle m \rangle = \{$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $k = {\tt length}(a);\; l = {\tt length}(b)$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$d \leftarrow 0;\; i \leftarrow 0$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${\bf for}\;\; i \leftarrow 0\, .\,. \,k \;\; \{$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $d = d_i$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${\bf if}\;\; a[i] - b[i] - d \geq 0 \;\;\{$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$c[i] \leftarrow a[i] - b[i] - d$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$d \leftarrow 0$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$\}$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${\bf else}\;\; \{$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$c[i] \leftarrow m + (a[i] - b[i] - d)$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$d \leftarrow 1$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$\}$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// $d = d_{i+1}$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$\}$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// $c = c[0] + c[1] m + c[2] m^2 + \ldots + c[k] m^k$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$s \leftarrow k$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${\bf while}\;\; s > 0 \; \& \; c[s] = 0 \;\;\{$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\qquad $s \leftarrow s - 1$<br/>
+&nbsp;&nbsp;&nbsp;$\}$<br/>
+
+Цикл while удаляет нули в старших разрядах найденного числа.
+
+При реализации нужно не забыть, что в элементах массива ${\tt b[i]}$ при ${\tt i > l}$ могут быть произвольные числа. (При записи алгоритма мы считали, что $b_i = 0$ при $i > l$.)
+
+#### Умножение длинных чисел
+
+Пусть $\overline a = (a_0, a_1, \ldots, a_k)$, 
+$\overline b = (b_0, b_1, \ldots, b_l)$ -- представления целых неотрицательных чисел $a$ и $b$ в системе счисления по основанию $m$.
+Предположим, что $k \geq l$. Требуется найти представление числа $c = ab$ в той же системе счисления.
+
+По определению,
+$$
+b = b_0 + b_1 m + b_2 m^2 + \dots + b_l m^l.
+$$
+
+Тогда
+$$
+c = ab = ab_0 + ab_1 m + ab_2 m^2 + \dots + ab_l m^l.
+$$
+
+Предположим, что для СД "длинное число по модулю $m$" определены операции:
+
+* $c = {\rm add}(a,b)$ -- сложение длинных чисел $a,b$
+* $c = {\rm mult\_short}(a,b)$ -- умножение длинного числа $a$ на короткое число $b$
+* $c = {\rm mult\_power}(a,j)$ -- умножение длинного числа $a$ на $m^j$ (сдвиг массива цифр)
+
+Алгоритм:
+
+&nbsp;&nbsp;&nbsp;${\rm mult}(a,b) \rightarrow c = \{$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$c \leftarrow 0$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${\bf for}\;\; i \leftarrow 0\, .\,. \,l \;\; \{$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $c = ab_0 + ab_1m + \dots + ab_{i-1}m^{i-1}$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$x \leftarrow {\rm mult\_short}(a, b[i])$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// $x = ab_i$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$x \leftarrow {\rm mult\_power}(x, i)$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// $x = ab_im^i$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$c \leftarrow {\rm add}(c, x)$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// $c = ab_0 + ab_1m + \dots + ab_{i-1}m^{i-1} + ab_{i}m^{i}$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$\}$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// $c = ab_0 + ab_1m + \dots + ab_{l}m^{l} = ab$<br/>
+&nbsp;&nbsp;&nbsp;$\}$<br/>
+
+На выполнение алгоритма будет затрачено $O(kl)$ времени.
+
 
 ### Литература
 
