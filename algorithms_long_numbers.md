@@ -120,7 +120,6 @@ $$a^{(k-1)} = a^{(k)}m + a_{k-1}$$,
 $$a^{(k)} = a_k$$.
 
 Отсюда
-
 $$
 a = \left( \underbrace{  \left( \underbrace{  \left( \underbrace{ \dots ( \overbrace{ a_k m + a_{k-1} }^{a^{(k-1)}} ) m  \dots  }_{a'''}  \right) m  + a_2 }_{a''}  \right) m + a_1  }_{a'} \right) m + a_0 =
 $$
