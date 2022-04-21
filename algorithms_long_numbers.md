@@ -50,11 +50,12 @@ $$0 \leq a_i < m, \; a_k \neq 0$$.
 Построим алгоритм:
 
 &nbsp;&nbsp;&nbsp; $$i \leftarrow 0$$<br/>
-&nbsp;&nbsp;&nbsp; $${\bf while}\; a > 0 \; \{$$<br/>
+&nbsp;&nbsp;&nbsp; $${\bf do}$$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$a_i \leftarrow a \;{\rm mod}\; m$$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$a \leftarrow [a/m]$$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$i \leftarrow i + 1$$<br/>
-&nbsp;&nbsp;&nbsp; $$\}$$<br/>
+&nbsp;&nbsp;&nbsp; $$\} {\bf while}\; a > 0 \;
+$$<br/>
 &nbsp;&nbsp;&nbsp; // $$k = i-1$$
 
 Здесь $$a \;{\rm mod}\; m$$ -- остаток от деления $$a$$ на $$m$$,
@@ -202,6 +203,173 @@ x : {\tt LongInt}\langle q \rangle = \{$$<br/>
 
 
 ### 4. Структура данных "длинное число по модулю $m$"
+
+Абстрактное *длинное число по модулю $m$* -- это представление числа $a \in \mathbb N$ в системе счисления по основанию $m$:
+$\overline{a} = (a_0, a_1, a_2, \dots, a_k)$, где
+$$
+a = a_0 + a_1 m + a_2 m^2 + a_3 m^3 + \dots + a_k m^k,
+$$
+где $0 \leq a_i < m$, при этом $a_k > 0$.
+Для числа $a = 0$ делаем исключение: оно представляется в виде $\overline{a} = (a_0)$, где $a_0 = 0$, $k = 0$.
+
+Для построения структуры данных "длинное число по модулю $m$" нам нужно определить, как последовательность цифр $a_0, a_1, \dots, a_k$ будет храниться в памяти и как будут производиться операции над этими данными.
+
+В качестве реализации АТД "целое число в $m$-ичной системе счисления" используем
+массив целых чисел от 0 до $m-1$, содержащий представление хранимого длинного числа
+в системе счисления по основанию $m$.
+
+В силу того, что существует взаимно однозначное
+соответствие между такими последовательностями цифр и натуральными числами,
+над длинными числами можно выполнять арифметические операции, которые в результате
+дают представления суммы, разности, произведения и частного в $m$-ичной системе счисления. Ниже мы разберем алгоритмы получения этих представлений.
+
+Описание структуры данных на ЯП C++:
+
+```cpp
+class LongInt {
+  const int radix_default = 10000;
+  int radix;  // основание системы счисления
+public:
+  int num_digits;  // количество цифр в длинном числе
+  vector<int> digits;
+
+  // инвариант:
+  //   num_digits > 0,  digits.size() == num_digits,
+  //   digits[num_digits - 1] > 0
+
+  // конструктор: инициализация длинного числа значением value
+  LongInt (int value = 0, int radix = radix_default);
+
+  // арифметические операции
+  LongInt operator+ (const LongInt& b);  // длинное сложение
+  LongInt operator- (const LongInt& b);  // длинное вычитание
+  LongInt operator* (int b);  // умножение длинного числа на короткое
+  LongInt operator* (const LongInt& b);  // умножение длинного на длинное
+
+  // сравнение длинных чисел
+  bool operator==(const LongInt& b);
+  bool operator!=(const LongInt& b);
+  bool operator<(const LongInt& b);
+  bool operator<=(const LongInt& b);
+  bool operator>(const LongInt& b);
+  bool operator>=(const LongInt& b);
+
+  int get_radix (); // основание системы счисления
+};
+
+// длинное деление и взятие остатка от деления
+LongInt div_mod (const LongInt& a, const LongInt& b, LongInt& a_mod_b);
+```
+
+Для корректного представления чисел в СД "длинное число по модулю $m$" требуется, чтобы операции модификации СД сохраняли инвариант: количество цифр должно быть положительным, и старшая цифра должна быть отлична от 0.
+
+
+### 5. Алгоритмы операций над длинными числами
+
+Предположим, что нам задано два представления целых неотрицательных чисел $a, b$ в системе счисления по основанию $m$:
+$\overline{a} = (a_0, a_1, a_2, \dots, a_k)$, где
+$$
+a = a_0 + a_1 m + a_2 m^2 + a_3 m^3 + \dots + a_k m^k,
+$$
+где $0 \leq a_i < m$, при этом $a_k > 0$, за исключением случая $a = 0$, и аналогично
+$\overline{b} = (b_0, b_1, b_2, \dots, b_l)$, где
+$$
+b = b_0 + b_1 m + b_2 m^2 + b_3 m^3 + \dots + b_l m^l,
+$$
+где $0 \leq b_i < m$, при этом $b_l > 0$, за исключением случая $b = 0$.
+
+Требуется вычислить представление числа $c = f(a, b)$ в той же системе счисления.
+Отметим, что в силу единственности такого представления, если мы найдем
+последовательность цифр $(c_0, c_1, c_2, \dots, c_s)$, для которой $0 \leq c_i < m$, такую, что
+$c = \displaystyle\sum_{i=0}^s c_i m^i$, то это и будет искомое представление числа $c$
+в $m$-ичной системе счисления.
+
+#### Длинное сложение
+
+Сложим два представления $a = \displaystyle\sum_{i=0}^k a_i m^i$ и
+$b = \displaystyle\sum_{i=0}^l b_i m^i$ и преобразуем сумму
+$c = a + b = \displaystyle\sum_{i=0}^p (a_i + b_i) m^i$, где $p = \max\{k, l\}$, к виду
+$c = \displaystyle\sum_{i=0}^s c_i m^i$, где $0 \leq c_i < m$.
+
+По теореме о делении с остатком $a_0 + b_0 = qm + r$, где $q$ -- неполное частное, $r$ -- остаток, $q, r \in \mathbb Z$, $0 \leq r < m$.
+Обозначим $d_1 := q$, $c_0 := r$. Другое обозначение:
+$d_1 = [(a_0 + b_0)/m]$, $c_0 = (a_0 + b_0) \bmod m$.
+
+Таким образом,
+$$
+c = c_0 + (a_1 + b_1 + d_1)m + \sum_{i=2}^p (a_i + b_i)m^i =.
+$$
+$$
+= c_0 + m\left[ (a_1 + b_1 + d_1) + \sum_{i=1}^p (a_{i+1} + b_{i+1})m^i \right],
+$$
+и задача свелась к нахождению цифр числа $(a_1 + b_1 + d_1) + \displaystyle\sum_{i=1}^p (a_{i+1} + b_{i+1})m^i$.
+
+Теперь у нас вырисовывается математическая индукция, которая в программе может
+быть реализована рекурсивно либо итерационно. Такие конструкции часто встречаются
+при алгоритмизации.
+
+Разделив $(a_1 + b_1 + d_1)$ на $m$, получим
+$$
+c = c_0 + c_1m + (a_2 + b_2 + d_2)m^2 + \sum_{i=3}^p (a_i + b_i)m^i,
+$$
+где $a_1 + b_1 + d_1 = c_1 + d_2m$, то есть $c_1 = (a_1 + b_1 + d_1) \bmod m$, $d_2 = [(a_1 + b_1 + d_1)/m]$.
+Далее, аналогично,
+$$
+c = c_0 + c_1m + c_2m + (a_3 + b_3 + d_3)m^3 + \sum_{i=4}^p (a_i + b_i)m^i,
+$$
+где $a_2 + b_2 + d_2 = c_2 + d_3m$,
+и вообще
+$$
+c = \sum_{i=0}^j c_im^i + (a_{j+1} + b_{j+1} + d_{j+1})m^{j+1} + \sum_{i=j+2}^p (a_i + b_i)m^i, \quad j = 0..p-2,
+$$
+где $a_j + b_j + d_j = c_j + d_{j+1}m$, то есть $c_j = (a_j + b_j + d_j) \bmod m$, $d_{j+1} = [(a_j + b_j + d_j)/m]$.
+
+Здесь мы считаем
+\begin{equation}
+\label{ab}
+a_i = 0 \text{ при } i > k,\quad b_i = 0 \text{ при } i > l.
+\end{equation}
+
+Итак, резюмируя всё вышесказанное,
+$$
+c = a + b = \sum_{i=0}^p (a_i + b_i) m^i =
+$$
+$$
+= c_0 + (a_1 + b_1 + d_1)m + \sum_{i=2}^p (a_i + b_i) m^i =
+$$
+$$
+= c_0 + c_1m + (a_2 + b_2 + d_2)m^2 + \sum_{i=3}^p (a_i + b_i) m^i =
+$$
+$$
+= c_0 + c_1m + c_2m^2 + (a_3 + b_3 + d_3)m^3 + \sum_{i=3}^p (a_i + b_i) m^i = \ldots =
+$$
+$$
+= \sum_{i=0}^{p-1} c_im^i + (a_p + b_p + d_p)m^p = \sum_{i=0}^{p} c_im^i + d_{p+1}m^{p+1}.
+$$
+Поскольку $a < m^{p+1}$ и $b < m^{p+1}$, то $a + b < 2m^{p+1}$, поэтому $d_{p+1} < 2$.
+Этим объясняется то, что старшая цифра суммы в случае возникновения переноса в $(p+1)$-й разряд
+не превосходит 1.
+
+Переобозначим $c_{p+1} = d_{p+1}$ и $s = p+1$ в случае $d_{p+1} > 0$, иначе $s = p$.
+Итак, мы вывели представление суммы $c = a+b = \displaystyle\sum_{i=0}^s c_im^i$
+в системе счисления по основанию $m$, поскольку $0 \leq c_i < m$.
+
+Алгоритм длинного сложения:
+
+&nbsp;&nbsp;&nbsp; ${\tt sum}(a, b : {\tt LongInt\langle m \rangle}) \to
+c : {\tt LongInt}\langle m \rangle = \{$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $k = {\tt length}(a);\; l = {\tt length}(b)$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $d \leftarrow 0;\; i \leftarrow 0$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${\bf while}\;\; i \leq k\; \vee\; i \leq l\; \vee\; d > 0$ $\{$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $d = d_i$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $c_i \leftarrow (a_i + b_i + d) \bmod m$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $d \leftarrow [(a_i + b_i + d) / m]$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $d = d_{i+1}$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $i \leftarrow i + 1$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $\}$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$s \leftarrow i - 1$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// $c = c_0 + c_1 m + c_2 m^2 + \ldots + c_s m^s$<br/>
+&nbsp;&nbsp;&nbsp; $\}$
 
 
 ### Литература
