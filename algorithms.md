@@ -3,7 +3,7 @@
 
 - [Введение](algorithms_introduction.md)
 - [Длинные числа](algorithms_long_numbers.md)
-- Последовательности
+- [Последовательности](algorithms_sequences.md)
 - Сортировка
 - Переборный поиск
 - Обход графов
