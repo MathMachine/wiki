@@ -4,7 +4,7 @@
 - [Введение](algorithms_introduction.md)
 - [Длинные числа](algorithms_long_numbers.md)
 - [Последовательности](algorithms_sequences.md)
-- Сортировка
+- [Сортировка](algorithms_sorting.md)
 - Переборный поиск
 - Обход графов
 - Деревья выражений
