@@ -46,27 +46,27 @@ $\text{НОД}(a,b)$. Алгоритм можно записать в друго
 
 ${\rm gcd}(a, b) \;\langle\; a, b \in \mathbb Z, \; b \neq 0 \;\rangle = \{$
 
-$p \leftarrow a; \;\; q \leftarrow b; \;\; i \leftarrow 1$
+$\qquad$ $p \leftarrow a; \;\; q \leftarrow b; \;\; i \leftarrow 1$
 
-// $p = r_0$, $q = r_1$
+$\qquad$ // $p = r_0$, $q = r_1$
 
-${\bf while}\;\; q \neq 0 \;\; \{$
+$\qquad$ ${\bf while}\;\; q \neq 0 \;\; \{$
 
-// $p = r_{i-1}$, $q = r_i$
+$\qquad\qquad$ // $p = r_{i-1}$, $q = r_i$
 
-$r \leftarrow p \bmod q$
+$\qquad\qquad$ $r \leftarrow p \bmod q$
 
-// $r = r_{i+1}$
+$\qquad\qquad$ // $r = r_{i+1}$
 
-$p \leftarrow q; \;\; q \leftarrow r$
+$\qquad\qquad$ $p \leftarrow q; \;\; q \leftarrow r$
 
-// $p = r_i$, $q = r_{i+1}$
+$\qquad\qquad$ // $p = r_i$, $q = r_{i+1}$
 
-$i \leftarrow i + 1$
+$\qquad\qquad$ $i \leftarrow i + 1$
 
-$\}$
+$\qquad$ $\}$
 
-${\bf return}\;\, p$
+$\qquad ${\bf return}\;\, p$
 
 $\}$
 
