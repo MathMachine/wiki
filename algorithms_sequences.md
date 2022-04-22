@@ -25,7 +25,7 @@
 так называемого *индекса* массива.
 
 $$
-{\tt T[]}\; a \leftarrow {\bf new}\; T[1..n]
+{\mathtt T[]}\; a \leftarrow {\bf new}\; T[1..n]
 $$
 
 ![Рис. 1](/images/algorithms/sequences/array.png)
@@ -42,7 +42,7 @@ $$
 элемент списка, либо "ноль", если текущий элемент является последним.
 
 $$
-\#{\tt List}\langle T\rangle = \{ {\tt data}: T;\; {\tt next}: \#{\tt List}\langle T\rangle \}
+\#{\mathtt List}\langle T\rangle = \{ {\mathtt data}: T;\; {\mathtt next}: \#{\mathtt List}\langle T\rangle \}
 $$
 
 ![Рис. 2](/images/algorithms/sequences/list1.png)

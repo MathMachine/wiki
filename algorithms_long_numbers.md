@@ -422,8 +422,8 @@ $$
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// $c = c[0] + c[1] m + c[2] m^2 + \ldots + c[k] m^k$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$s \leftarrow k$$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$${\bf while}\;\; s > 0 \; \& \; c[s] = 0 \;\;\{$$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\qquad $$s \leftarrow s - 1$$<br/>
-&nbsp;&nbsp;&nbsp;$\}$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$\qquad s \leftarrow s - 1$$<br/>
+&nbsp;&nbsp;&nbsp;$$\}$$<br/>
 
 Цикл while удаляет нули в старших разрядах найденного числа.
 
