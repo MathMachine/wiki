@@ -404,12 +404,11 @@ $$
 
 Алгоритм длинного вычитания:
 
-&nbsp;&nbsp;&nbsp; ${\tt sub}(a, b : {\tt LongInt\langle m \rangle}) \to
-c : {\tt LongInt}\langle m \rangle = \{$<br/>
+&nbsp;&nbsp;&nbsp; ${\tt sub}(a, b : {\tt LongInt\langle m \rangle}) \to c : {\tt LongInt}\langle m \rangle = \{$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $k = {\tt length}(a);\; l = {\tt length}(b)$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$d \leftarrow 0;\; i \leftarrow 0$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${\bf for}\;\; i \leftarrow 0\, .\,. \,k \;\; \{$<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // $d = d_i$<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// $d = d_i$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${\bf if}\;\; a[i] - b[i] - d \geq 0 \;\;\{$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$c[i] \leftarrow a[i] - b[i] - d$<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$d \leftarrow 0$<br/>
