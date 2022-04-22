@@ -25,32 +25,32 @@ $r_i \neq 0$. Неполное частное от деления равно $q_
 
 Алгоритм построения последовательности $\{r_i\}$ (*алгоритм Евклида*):
 
-${\rm gcd}(a, b) = \{$
+$$\;$$ $${\rm gcd}(a, b) = \{$$
 
 $\qquad$ $r_0 \leftarrow a; \;\; r_1 \leftarrow b; \;\; i \leftarrow 1$
 
-$\qquad$ ${\bf while}\;\; r_i \neq 0 \;\; \{$
+$\qquad$ $${\bf while}\;\; r_i \neq 0 \;\; \{$$
 
 $\qquad\qquad$ $r_{i+1} \leftarrow r_{i-1} \bmod r_i$
 
 $\qquad\qquad$ $i \leftarrow i + 1$
 
-$\qquad$ $\}$
+$\qquad$ $$\}$$
 
 $\qquad$ ${\bf return}\;\, r_{i-1}$
 
-$\}$
+$$\}$$
 
 Далее мы докажем, что функция $\rm gcd$ возвращает
 $\text{НОД}(a,b)$. Алгоритм можно записать в другом виде:
 
-${\rm gcd}(a, b) \;\langle\; a, b \in \mathbb Z, \; b \neq 0 \;\rangle = \{$
+$${\rm gcd}(a, b) \;\langle\; a, b \in \mathbb Z, \; b \neq 0 \;\rangle = \{$$
 
 $\qquad$ $p \leftarrow a; \;\; q \leftarrow b; \;\; i \leftarrow 1$
 
 $\qquad$ // $p = r_0$, $q = r_1$
 
-$\qquad$ ${\bf while}\;\; q \neq 0 \;\; \{$
+$\qquad$ $${\bf while}\;\; q \neq 0 \;\; \{$$
 
 $\qquad\qquad$ // $p = r_{i-1}$, $q = r_i$
 
@@ -64,11 +64,11 @@ $\qquad\qquad$ // $p = r_i$, $q = r_{i+1}$
 
 $\qquad\qquad$ $i \leftarrow i + 1$
 
-$\qquad$ $\}$
+$\qquad$ $$\}$$
 
-$\qquad ${\bf return}\;\, p$
+$\qquad$ $${\bf return}\;\, p$$
 
-$\}$
+$$\}$$
 
 Справедливы равенства [Фаддеев, с. 10]: 
 
@@ -126,28 +126,27 @@ $u := u_k$, $v := v_k$. ◻
 
 Сформулируем *расширенный алгоритм Евклида* [Окулов, с. 74]:
 
-${\rm gcd\_ext}(a, b) \rightarrow [d, u, v] = \{$
+$${\rm gcd\_ext}(a, b) \rightarrow [d, u, v] = \{$$
 
-$\quad$ $r_0 \leftarrow a; \;\; r_1 \leftarrow b; \;\; i \leftarrow 1$
+$$\quad$$ $$r_0 \leftarrow a; \;\; r_1 \leftarrow b; \;\; i \leftarrow 1$$
 
-$\quad$ $u_0 \leftarrow 1; \;\; v_0 \leftarrow 0; \;\; u_1 \leftarrow 0; \;\; v_1 \leftarrow 1$
+$$\quad$$ $$u_0 \leftarrow 1; \;\; v_0 \leftarrow 0; \;\; u_1 \leftarrow 0; \;\; v_1 \leftarrow 1$$
 
-$\quad$  ${\bf while}\;\; r_i \neq 0 \;\; \{$
+$$\quad$$  $${\bf while}\;\; r_i \neq 0 \;\; \{$$
 
-$\quad\quad$  $r_{i+1} \leftarrow r_{i-1} \bmod r_i$
+$$\quad\quad$$  $$r_{i+1} \leftarrow r_{i-1} \bmod r_i$$
 
-$\quad\quad$ $q_{i+1} \leftarrow [r_{i-1} / r_i]$
+$$\quad\quad$$ $$q_{i+1} \leftarrow [r_{i-1} / r_i]$$
 
-$\quad\quad$ $u_{i+1} \leftarrow u_{i-1} - q_{i+1}u_i; \;\;
-$\quad\quad$ v_{i+1} \leftarrow v_{i-1} - q_{i+1}v_i$
+$$\quad\quad$$ $$u_{i+1} \leftarrow u_{i-1} - q_{i+1}u_i; \;\;$$ $$\quad\quad$$ $$v_{i+1} \leftarrow v_{i-1} - q_{i+1}v_i$$
 
-$\quad\quad$ $i \leftarrow i + 1$
+$$\quad\quad$$ $$i \leftarrow i + 1$$
 
-$\quad$ $\}$
+$$\quad$$ $$\}$$
 
-$\quad$ $d \leftarrow r_{i-1};\;\; u \leftarrow u_{i-1}; \;\; v \leftarrow v_{i-1}$
+$$\quad$$ $$d \leftarrow r_{i-1};\;\; u \leftarrow u_{i-1}; \;\; v \leftarrow v_{i-1}$$
 
-$\}$
+$$\}$$
 
 ### Литература
 
