@@ -6,7 +6,7 @@
 - [Последовательности](algorithms_sequences.md)
 - [Сортировка](algorithms_sorting.md)
 - [Переборный поиск](algorithms_enumeration.md)
-- Обход графов
+- [Обход графов](algorithms_graphs.md)
 - Деревья выражений
 - Синтаксический разбор
 - [Множества и функции](algorithms_sets_functions.md)
