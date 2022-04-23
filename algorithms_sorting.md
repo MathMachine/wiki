@@ -33,7 +33,7 @@ $\qquad$ $${\bf for}\; i \leftarrow 2..n\; \{$$<br/>
 $\qquad\qquad$ // $A[1..i-1]$ отсортирован<br/>
 $\qquad\qquad$ $$j = \max\{j \in 1..i \colon A[i] \geq A[j-1]\} = \{$$<br/>
 $\qquad\qquad\qquad$ $$j \leftarrow i$$<br/>
-$\qquad\qquad\qquad$ $${\bf while}\; j > 1 \text{\;и\;} A[i] < A[j-1] \; \{$$<br/>
+$\qquad\qquad\qquad$ $${\bf while}\; j > 1 \;\text{и}\; A[i] < A[j-1] \; \{$$<br/>
 $\qquad\qquad\qquad\qquad$ $$j \leftarrow j - 1$$<br/>
 $\qquad\qquad\qquad$ $$\}$$<br/>
 $\qquad\qquad$ $$\}$$<br/>
