@@ -7,8 +7,8 @@
 - [Сортировка](algorithms_sorting.md)
 - [Переборный поиск](algorithms_enumeration.md)
 - [Обход графов](algorithms_graphs.md)
-- Деревья выражений
-- Синтаксический разбор
+- [Деревья выражений](algorithms_expr_trees.md)
+- [Синтаксический разбор](algorithms_parsing.md)
 - [Множества и функции](algorithms_sets_functions.md)
 - [Численные алгоритмы](algorithms_numeric.md)
 - Динамическое программирование
