@@ -5,7 +5,7 @@
 - [Длинные числа](algorithms_long_numbers.md)
 - [Последовательности](algorithms_sequences.md)
 - [Сортировка](algorithms_sorting.md)
-- Переборный поиск
+- [Переборный поиск](algorithms_enumeration.md)
 - Обход графов
 - Деревья выражений
 - Синтаксический разбор
