@@ -15,20 +15,20 @@
 * $(\neg X \vee Y)(\neg Y \vee Z)(X \vee \neg Z)$
 * $((X\vee Y)(Y \vee Z)(X \vee Z)) \to (X \& Y \& Z)$
 
-3. ![](fig/task1.png)
+3. ![](images/mathlogic/task1.png)
 
 4. Найти СДНФ для ДНФ $(x \& \neg x) \vee x \vee (y \& z \& y)$.
 
 5. Преобразовать предыдущую формулу к СКНФ.
                                                                 
-6. ![](fig/task2.png)
+6. ![](images/mathlogic/task2.png)
 
 
 ### Логическое следствие
 
-7. ![](fig/task3.png)
+7. ![](images/mathlogic/task3.png)
 
-8. ![](fig/task4.png)
+8. ![](images/mathlogic/task4.png)
 
 ### Текстовые задачи логики высказываний
 
@@ -133,15 +133,15 @@
 17. Минимизировать формулу от 4 переменных, находящуюся в СДНФ и представленную в следующей таблице
 методом Квайна или картами Карно.
 
- ![](fig/task5.png)
+ ![](images/mathlogic/task5.png)
 
 ### Логика предикатов
 
 18.  
-![](fig/task6.png)
+![](images/mathlogic/task6.png)
 
 19.  
-![](fig/task7.png)
+![](images/mathlogic/task7.png)
 
 20. Какие из нижеприведенных формул являются общезначимыми:
 * $\exists x\, (P_1(x) \& P_2(x)) \to (\exists x\, P_1(x) \& \exists x\, P_2(x))$;
