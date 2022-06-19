@@ -125,7 +125,8 @@ $$
 Если $F$ выводима только из аксиом, то говорят, что $F$ доказуема, и пишут $\vdash F$. В таком случае
 $F$ -- теорема ИВ.
 
-В [Степанова], [Игошин, с. 118] приводятся примеры выводов следующих выводимых формул: 
+В [Степанова], [Игошин, с. 118] и [здесь](http://mathhelpplanet.com/static.php?p=formalizovannoye-ischisleniye-vyskazyvaniy)
+приводятся примеры выводов следующих выводимых формул: 
 
 - $\vdash \varphi \to \varphi$; 
 
@@ -139,7 +140,10 @@ $F$ -- теорема ИВ.
 
 - $\varphi \to (\neg \psi \to \neg(\varphi \to \psi))$;
 
-- $(\varphi \to \psi) \to ((\neg\varphi \to \psi) \to \psi)$.
+- $(\varphi \to \psi) \to ((\neg\varphi \to \psi) \to \psi)$;
+
+- $\neg\neg\varphi \to \varphi$.
+ 
 
 В качестве примера рассмотрим вывод
 $\vdash (\neg A \vee B) \to (A \to B)$.
@@ -195,11 +199,15 @@ $$
 
 $$
 \vdash (A \to B) \to ((B \to C) \to (A \to C)) \Leftrightarrow
+$$
+$$
 A \to B \vdash (B \to C) \to (A \to C) \Leftrightarrow
 $$
 $$
 \Leftrightarrow A \to B, B \to C \vdash A \to C \Leftrightarrow
-A, A \to B, B \to C \vdash C.
+$$
+$$
+\Leftrightarrow A, A \to B, B \to C \vdash C.
 $$
 Вывод: $A,\;A \to B,\;B, \; B\to C,\; C$.
 
