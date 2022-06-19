@@ -326,7 +326,7 @@ $$
 Поскольку $\neg A \& \neg B \vdash \neg A$ (акс. 3) и $\neg A \& \neg B \vdash \neg B$ (акс. 4), то
 из
 $\neg A, \neg B \vdash \neg (A \vee B)$
-следует, что $\neg A \vee \neg B \vdash \neg(A \vee B)$.
+следует, что $\neg A \& \neg B \vdash \neg(A \vee B)$.
 
 Дистрибутивность конъюнкции относительно дизъюнкции и формула замены импликации
 доказаны в [Судоплатов, с. 24].
