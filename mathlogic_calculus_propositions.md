@@ -309,9 +309,9 @@ $$
 $\dfrac{\Gamma,A \vdash B}{\Gamma, B \vdash \neg A}$ из
 $A \vdash A \vee B$ следует $\neg(A\vee B) \vdash \neg A$.
 
+Далее
 $$
-\frac{
-\frac{B \vdash A \vee B}{\neg (A \vee B) \vdash \neg B};\quad 
+\frac{\frac{B \vdash A \vee B}{\neg (A \vee B) \vdash \neg B};\quad 
 \neg(A \vee B) \vdash \neg A}
 {\neg(A \vee B) \vdash \neg A \& \neg B}
 $$
@@ -319,6 +319,7 @@ $$
 По правилу образования конъюнкции (акс. 5)
 $\dfrac{\Gamma \vdash A \quad \Gamma \vdash B}{\Gamma \vdash (A \& B)}$
 
+Тогда
 $$
 \frac{\neg A, \neg B \vdash \neg(A \vee B)}{\neg A \& \neg B \vdash \neg (A \vee B)}
 $$
