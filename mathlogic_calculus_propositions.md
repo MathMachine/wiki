@@ -163,7 +163,7 @@ $\vdash (\neg A \vee B) \to (A \to B)$.
 
 - правило введения конъюнкции $\dfrac{\Gamma \vdash A;\; \Gamma \vdash B}{\Gamma \vdash A\& B}$;
 
-- правило введения дизъюнкции $\dfrac{\Gamma, A \vdash C; \; \Gamma, B \vdash C}{\Gamma, A \vee B \vdash C};
+- правило введения дизъюнкции $\dfrac{\Gamma, A \vdash C; \; \Gamma, B \vdash C}{\Gamma, A \vee B \vdash C}$;
 
 - правило перестановки посылок $\dfrac{\vdash A \to (B \to C)}{\vdash B \to (A \to C)}$;
 
@@ -263,6 +263,7 @@ $$
 
 Аналогично $A \vee B \vdash (A \vee B) \vee C$.
 
+
 По правилу сечения
 $$
 \frac{A \vdash A \vee B \quad A, A \vee B \vdash (A \vee B) \vee C}{A \vdash (A \vee B) \vee C}.
@@ -274,6 +275,17 @@ $$
 $$
 \frac{\Gamma, A \vdash C \quad \Gamma, B \vdash C}{\Gamma, A\vee B \vdash C}.
 $$
+
+Применяя правило разбора случаев, получим
+$$
+\frac{B \vdash (A \vee B) \vee C; \quad C \vdash (A \vee B) \vee C}{B \vee C \vdash (A \vee B) \vee C}.
+$$
+Поскольку $A \vdash (A \vee B) \vee C$, то по правилу введения дизъюнкции
+$$
+A \vee (B \vee C) \vdash (A \vee B) \vee C.
+$$
+Ассоциативность дизъюнкции в одну сторону доказана.
+
 
 Правило рассуждения от противного:
 $$
@@ -291,7 +303,33 @@ $$
 \neg (A \vee B) \leftrightarrow (\neg A \& \neg B).
 $$
 
+Чтобы доказать эквиваленцию, нужно доказать две импликации.
 
+Заметим, что по правилу контрапозиции
+$\dfrac{\Gamma,A \vdash B}{\Gamma, B \vdash \neg A}$ из
+$A \vdash A \vee B$ следует $\neg(A\vee B) \vdash \neg A$.
+
+$$
+\frac{
+\frac{B \vdash A \vee B}{\neg (A \vee B) \vdash \neg B};\quad 
+\neg(A \vee B) \vdash \neg A}
+{\neg(A \vee B) \vdash \neg A \& \neg B}
+$$
+
+По правилу образования конъюнкции (акс. 5)
+$\dfrac{\Gamma \vdash A \quad \Gamma \vdash B}{\Gamma \vdash (A \& B)}$
+
+$$
+\frac{\neg A, \neg B \vdash \neg(A \vee B)}{\neg A \& \neg B \vdash \neg (A \vee B)}
+$$
+
+Поскольку $\neg A \& \neg B \vdash \neg A$ (акс. 3) и $\neg A \& \neg B \vdash \neg B$ (акс. 4), то
+из
+$\neg A, \neg B \vdash \neg (A \vee B)$
+следует, что $\neg A \vee \neg B \vdash \neg(A \vee B)$.
+
+Дистрибутивность конъюнкции относительно дизъюнкции и формула замены импликации
+доказаны в [Судоплатов, с. 24].
 
 
 ### Полнота и непротиворечивость ИВ
@@ -314,5 +352,7 @@ $$
 Игошин -- Математическая логика (2016)
 
 Лихтарников, Сукачева -- Математическая логика. Курс лекций. Задачник-практикум и решения (2009)
+
+Судоплатов, Овчинникова -- Математическая логика и теория алгоритмов (2010)
 
 [Курс лекций МФТИ по математической логике и теории алгоритмов](https://mipt.ru/online/diskretnaya-matematika/matematicheskaya-logika-i-teoriya-algoritmov.php)
