@@ -159,7 +159,9 @@ $\vdash (\neg A \vee B) \to (A \to B)$.
 5) $(\neg A \vee B) \to (A \to B)$ (m.p. из 2, 4)
 
 
-В [Лихтарников, с. 62, с. 202], [Игошин] доказываются производные правила вывода:
+В [Лихтарников, с. 62, с. 202], [Игошин], [здесь](http://mit.spbau.ru/sewiki/images/c/c7/Mlc03.pdf)
+и [здесь](https://dspace.kpfu.ru/xmlui/bitstream/handle/net/21881/50_24_kl-000603.pdf)
+доказываются производные правила вывода:
 
 - правило введения конъюнкции $\dfrac{\Gamma \vdash A;\; \Gamma \vdash B}{\Gamma \vdash A\& B}$;
 
@@ -169,7 +171,9 @@ $\vdash (\neg A \vee B) \to (A \to B)$.
 
 - правило соединения посылок $\dfrac{\vdash A \to (B \to C)}{\vdash A\& B \to C}$;
 
-- правило разъединения посылок $\dfrac{\vdash A \& B \to C}{\vdash A \to (B \to C)}$.
+- правило разъединения посылок $\dfrac{\vdash A \& B \to C}{\vdash A \to (B \to C)}$
+
+и другие.
 
 
 ### Теорема о дедукции
