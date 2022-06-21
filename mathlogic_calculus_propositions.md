@@ -159,7 +159,8 @@ $\vdash (\neg A \vee B) \to (A \to B)$.
 5) $(\neg A \vee B) \to (A \to B)$ (m.p. из 2, 4)
 
 
-В [Лихтарников, с. 62, с. 202], [Игошин], [здесь](http://mit.spbau.ru/sewiki/images/c/c7/Mlc03.pdf)
+В [Лихтарников, с. 62, с. 202], [Игошин], [Корнеева, с. 17],
+[здесь](http://mit.spbau.ru/sewiki/images/c/c7/Mlc03.pdf)
 и [здесь](https://dspace.kpfu.ru/xmlui/bitstream/handle/net/21881/50_24_kl-000603.pdf)
 доказываются производные правила вывода:
 
@@ -359,5 +360,7 @@ $\neg A, \neg B \vdash \neg (A \vee B)$
 Лихтарников, Сукачева -- Математическая логика. Курс лекций. Задачник-практикум и решения (2009)
 
 Судоплатов, Овчинникова -- Математическая логика и теория алгоритмов (2010)
+
+Корнеева -- Математическая логика. Конспект лекций (2014)
 
 [Курс лекций МФТИ по математической логике и теории алгоритмов](https://mipt.ru/online/diskretnaya-matematika/matematicheskaya-logika-i-teoriya-algoritmov.php)
