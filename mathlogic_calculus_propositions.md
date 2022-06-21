@@ -160,7 +160,8 @@ $\vdash (\neg A \vee B) \to (A \to B)$.
 
 
 В [Лихтарников, с. 62, с. 202], [Игошин], [Корнеева, с. 17],
-[здесь](http://mit.spbau.ru/sewiki/images/c/c7/Mlc03.pdf)
+[здесь](http://mit.spbau.ru/sewiki/images/c/c7/Mlc03.pdf),
+[здесь](http://ru.discrete-mathematics.org/fall2017/1/logic_pmi/2018/lecture-5-7-prop-calculus.pdf)
 и [здесь](https://dspace.kpfu.ru/xmlui/bitstream/handle/net/21881/50_24_kl-000603.pdf)
 доказываются производные правила вывода:
 
