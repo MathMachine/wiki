@@ -119,7 +119,7 @@ $$
 
 ### Доказуемые и выводимые формулы ИВ
 
-Если имеется вывод формулы $F$ из множества $\Gamma$ (конечная последовательность формул из $\Gamma$,
+Если имеется вывод формулы $F$ из множества гипотез $\Gamma$ (конечная последовательность формул из $\Gamma$,
 в которой каждая формула -- либо аксиома, либо формула из $\Gamma$, либо получена из предыдущих
 формул по правилу modus ponens), то говорят, что $F$ выводима из $\Gamma$, и пишут $\Gamma \vdash F$.
 Если $F$ выводима только из аксиом, то говорят, что $F$ доказуема, и пишут $\vdash F$. В таком случае
@@ -160,9 +160,8 @@ $\vdash (\neg A \vee B) \to (A \to B)$.
 
 
 В [Лихтарников, с. 62, с. 202], [Игошин], [Корнеева, с. 17],
-[здесь](http://mit.spbau.ru/sewiki/images/c/c7/Mlc03.pdf),
+[здесь](http://mit.spbau.ru/sewiki/images/c/c7/Mlc03.pdf) и
 [здесь](http://ru.discrete-mathematics.org/fall2017/1/logic_pmi/2018/lecture-5-7-prop-calculus.pdf)
-и [здесь](https://dspace.kpfu.ru/xmlui/bitstream/handle/net/21881/50_24_kl-000603.pdf)
 доказываются производные правила вывода:
 
 - правило введения конъюнкции $\dfrac{\Gamma \vdash A;\; \Gamma \vdash B}{\Gamma \vdash A\& B}$;
@@ -337,6 +336,9 @@ $\neg A, \neg B \vdash \neg (A \vee B)$
 
 Дистрибутивность конъюнкции относительно дизъюнкции и формула замены импликации
 доказаны в [Судоплатов, с. 24].
+
+Рекомендуется ознакомиться с [конспектами лекций МФТИ](https://mipt.ru/education/chairs/dm/education/courses/common_courses/year1/matematicheskaya-logika-i-teoriya-algoritmov-osen-2018.php)
+по исчислению высказываний.
 
 
 ### Полнота и непротиворечивость ИВ
