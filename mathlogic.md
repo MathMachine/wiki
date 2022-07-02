@@ -2,7 +2,7 @@
 
 - [Алгебра высказываний](mathlogic_propositions.md)
 - [Исчисление высказываний](mathlogic_calculus_propositions.md)
-- [Исчисление предикатов](mathlogic_calculus_predicates.md)
+- [Логика предикатов](mathlogic_predicates.md)
 - [Машина Тьюринга](mathlogic_Turing_machine.md)
 - [Рекурсивные функции](mathlogic_recursive_functions.md)
 - [Задачи](mathlogic_tasks.md)
