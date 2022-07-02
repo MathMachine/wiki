@@ -192,4 +192,6 @@ $\exists x\,(\varphi \,\&\,\psi) \equiv \exists x\,\varphi\,\&\,\psi$.
 
 Игошин -- Математическая логика (2016)
 
+Пруцков, Волкова -- Математическая логика и теория алгоритмов (2018)
+
 [Курс лекций МФТИ по математической логике и теории алгоритмов](https://mipt.ru/online/diskretnaya-matematika/matematicheskaya-logika-i-teoriya-algoritmov.php), [[текст](http://ru.discrete-mathematics.org/fall2017/1/logic_pmi/lecture-9-first-order.pdf)]
