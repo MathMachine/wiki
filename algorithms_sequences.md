@@ -59,7 +59,7 @@ struct ListElem {
 
 Переменная
 ```
-ListElem *head;
+ListElem* head;
 ```
 хранит указатель на первый элемент списка либо нулевой указатель, если список пуст.
 Последний элемент списка содержит поле `next = NULL`.
@@ -106,7 +106,7 @@ ListElem *head;
 list<int> a;
 list<int>::iterator it;
 // ...
-l.insert(it, 10);
+a.insert(it, 10);
 ```
 
 
