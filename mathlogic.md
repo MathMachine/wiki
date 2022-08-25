@@ -7,7 +7,7 @@
 - [Рекурсивные функции](mathlogic_recursive_functions.md)
 - [Задачи](mathlogic_tasks.md)
 - [Лабораторные работы](mathlogic_lab.md)
-- [Презентации](https://disk.yandex.ru/d/BFKUdktuiNgCUg)
+- [Презентации](https://disk.yandex.ru/d/Klm1E1vzgR28VQ)
 
 ### Источники
 
